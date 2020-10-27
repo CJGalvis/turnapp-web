@@ -1,17 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { EmployeesViewComponent } from './views/employees-view/employees-view.component';
 import { HomeViewComponent } from './views/home-view/home-view.component';
-import { TestViewComponent } from './views/test-view/test-view.component';
+import { SheduleViewComponent } from './views/shedule-view/shedule-view.component';
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'store'
+    redirectTo: 'turnapp'
   },
   {
-    path: 'store',
+    path: 'turnapp',
     component: DashboardComponent,
     children: [
       {
@@ -24,8 +25,12 @@ const routes: Routes = [
         component: HomeViewComponent
       },
       {
-        path: 'test',
-        component: TestViewComponent
+        path: 'employees',
+        component: EmployeesViewComponent
+      },
+      {
+        path: 'shedules',
+        component: SheduleViewComponent
       },
     ]
   }

@@ -1,0 +1,16 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <a mat-button [routerLink]="'/'">
+      <h1>TurnApp</h1>
+    </a>
+    <span class="menu-spacer"></span>
+    <div>
+      <a mat-button [routerLink]="'./employees'"> Empleados </a>
+      <a mat-button [routerLink]="'./shedules'"> Horarios </a>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
