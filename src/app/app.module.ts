@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppInterceptor } from './app-interceptor';
 
+import { MatNativeDateModule } from '@angular/material/core';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -14,6 +16,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -69,9 +72,13 @@ import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confi
     HttpClientModule,
     MatTooltipModule,
     MatProgressBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
+    MatDatepickerModule,
+    MatNativeDateModule,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AppInterceptor,

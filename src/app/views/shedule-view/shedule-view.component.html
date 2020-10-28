@@ -1,1 +1,69 @@
-<p>shedule-view works!</p>
+<mat-card class="mat-elevation-z4">
+    <mat-card-title>
+        Gestion de turnos
+    </mat-card-title>
+
+    <mat-card-content>
+        <form [formGroup]="registerSheduleForm" (ngSubmit)="saveShedule()">
+            <div fxLayout="row" fxLayoutGap="25px">
+                <mat-form-field fxFlex="25">
+                    <mat-label>Código</mat-label>
+                    <mat-select formControlName="employeeCode" required (selectionChange)="getEmployeeSelected($event)">
+                        <mat-option [value]="item.code" *ngFor="let item of employees">{{item.code}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="25">
+                    <mat-label>Primer nombre</mat-label>
+                    <input matInput formControlName="firstName">
+                </mat-form-field>
+
+                <mat-form-field fxFlex="25">
+                    <mat-label>Primer apellido</mat-label>
+                    <input matInput formControlName="firstLastname">
+                </mat-form-field>
+
+                <mat-form-field fxFlex="25">
+                    <mat-label>Categoría</mat-label>
+                    <mat-select formControlName="category">
+                        <mat-option value="VENTAS">Ventas</mat-option>
+                        <mat-option value="ASEO">Aseo</mat-option>
+                        <mat-option value="ADMIN">Administración</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="25px">
+                <mat-form-field fxFlex="33">
+                    <mat-label>Fecha de turno</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="date" [min]="now" (click)="picker.open()"
+                        required>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="33">
+                    <mat-label>Tipo turno</mat-label>
+                    <mat-select formControlName="type" (selectionChange)="setHours($event)" required>
+                        <mat-option [value]="item.name" *ngFor="let item of turns">{{ item.name }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="33">
+                    <mat-label>Horario</mat-label>
+                    <input matInput formControlName="hours" required>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="end end">
+                <button appHtt mat-raised-button color="primary" type="submit">
+                    Aceptar
+                </button>
+
+                <button appHtt mat-raised-button type="button" (click)="buildForm()">
+                    Limpiar
+                </button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

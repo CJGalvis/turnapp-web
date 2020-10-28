@@ -39,4 +39,10 @@ export class ApiService {
     const url: string = `${this.API}${endpoint}`;
     return this.http.delete<ApiResponse<EmployeeModel>>(url);
   }
+
+  getOneEmployee(code: string): Observable<any> {
+    const endpoint: string = `/employees/get/${code}`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.get<ApiResponse<EmployeeModel>>(url);
+  }
 }
