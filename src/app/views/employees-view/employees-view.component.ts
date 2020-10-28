@@ -2,7 +2,14 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
-import { EmployeeModel } from 'src/app/Models/EmployeeModel';
+import { EmployeeModel } from 'src/app/models/EmployeeModel';
+import { MessageService } from 'src/app/services/message.service';
+import { ApiService } from 'src/app/services/api.service';
+import { ApiResponse } from 'src/app/models/ApiResponse';
+import { ApiErrorModel } from 'src/app/models/ApiErrorModel';
+import { MatStepper } from '@angular/material/stepper';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogConfirmComponent } from 'src/app/components/dialog-confirm/dialog-confirm.component';
 
 @Component({
   selector: 'app-employees-view',
@@ -13,18 +20,25 @@ export class EmployeesViewComponent implements OnInit {
 
   public registerEmployeeForm: FormGroup;
   public searchEmployeeFrom: FormGroup;
+  private EmployeeSelected: EmployeeModel;
   public pageIndex: number = 0;
   public pageSize: number = 10;
-  public displayedColumns: string[] = ['select', 'code', 'name', 'lastname', 'category'];
-  public dataSource = new MatTableDataSource<EmployeeModel>(ELEMENT_DATA);
+  public displayedColumns: string[] = ['code', 'name', 'lastname', 'email', 'category', 'actions'];
+  public dataSource = new MatTableDataSource<EmployeeModel>([]);
+  public length: number = 0;
   public selection = new SelectionModel<EmployeeModel>(true, []);
   public pageSizeOptions: Array<number> = [5, 10, 15];
 
-  constructor() { }
+  constructor(
+    private messageService: MessageService,
+    private apiService: ApiService,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     this.buildFormRegister();
     this.buildFormSearch();
+    this.getEmployees();
   }
 
   buildFormRegister() {
@@ -49,41 +63,96 @@ export class EmployeesViewComponent implements OnInit {
     })
   }
 
-  saveEmployee() {
+  saveEmployee(stepper: MatStepper) {
+    if (this.registerEmployeeForm.invalid) {
+      this.messageService.shortMessage('Los campos marcados en rojo deben ser verificacos');
+      return;
+    }
+    const newEmployee: EmployeeModel = {
+      ...this.registerEmployeeForm.value
+    }
+    newEmployee.code = this.EmployeeSelected ? this.EmployeeSelected.code : null;
 
+    if (this.EmployeeSelected) {
+      this.apiService.editEmployee(newEmployee, this.EmployeeSelected.code).subscribe(
+        (response: any) => {
+          this.messageService.shortMessage(response.message);
+          this.EmployeeSelected = null;
+          this.buildFormRegister();
+          stepper.next();
+          this.getEmployees();
+        },
+        (error: any) => {
+          this.messageService.shortMessage(error.error.message);
+        }
+      )
+    } else {
+      this.apiService.saveEmployee(newEmployee).subscribe(
+        (response: any) => {
+          this.messageService.shortMessage(response.message);
+          this.buildFormRegister();
+          stepper.next();
+          this.getEmployees();
+        },
+        (error: any) => {
+          this.messageService.shortMessage(error.error.message);
+        }
+      )
+    }
   }
 
   searchEmployee() {
 
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
+  getEmployees(event?: any) {
+    const pageIndex = event ? event.pageIndex : this.pageIndex;
+    const pageSize = event ? event.pageSize : this.pageSize;
+    this.apiService.getEmployees(pageIndex, pageSize).subscribe(
+      (response: ApiResponse<EmployeeModel>) => {
+        this.dataSource = new MatTableDataSource<EmployeeModel>(response.items);
+        this.length = response.totalItems;
+      },
+      (error: ApiErrorModel) => {
+        this.messageService.shortMessage(error.error.message);
+      }
+    )
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
+  getItemToEdit(element: EmployeeModel, stepper: MatStepper) {
+    this.EmployeeSelected = element;
+    this.registerEmployeeForm.patchValue(element);
+    stepper.previous();
   }
 
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: EmployeeModel): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  goToDelete(element: EmployeeModel) {
+    const dialogRef = this.dialog.open(DialogConfirmComponent, {
+      width: '250px',
+      data: {
+        title: 'Confirmación',
+        message: '¿Está seguro de querer eliminar a este empleado?'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(
+      (result) => {
+        if (result) {
+          this.apiService.deleteEmployee(element.code).subscribe(
+            (response: ApiResponse<EmployeeModel>) => {
+              this.messageService.shortMessage(response.message);
+              this.getEmployees();
+            },
+            (error: ApiErrorModel) => {
+              this.messageService.shortMessage(error.error.message);
+            }
+          )
+        }
+      }
+    );
+  }
+
+  getChangeStepper(event) {
+    console.log(event);
   }
 
 }
-
-const ELEMENT_DATA: Array<EmployeeModel> = [
-  { code: 'C123456G', firstName: 'Camilo', firstLastname: 'Galvis', category: 'Ventas' },
-  { code: 'A654321M', firstName: 'Andres', firstLastname: 'Martinez', category: 'Admin' },
-  { code: 'K123456M', firstName: 'Kaleth', firstLastname: 'Morales', category: 'Aseo' },
-];
-

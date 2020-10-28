@@ -8,5 +8,6 @@ export interface EmployeeModel {
     seconLastname?: string;
     email?: string;
     category: string;
+    created?: Date;
     position?: number;
 }

@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AppInterceptor } from './app-interceptor';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,6 +10,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,6 +31,8 @@ import { EmployeesViewComponent } from './views/employees-view/employees-view.co
 import { SheduleViewComponent } from './views/shedule-view/shedule-view.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatStepperModule } from '@angular/material/stepper';
+import { HttpDisabledDirective } from './directives/http-disabled.directive';
+import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confirm.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +41,8 @@ import { MatStepperModule } from '@angular/material/stepper';
     HomeViewComponent,
     EmployeesViewComponent,
     SheduleViewComponent,
+    HttpDisabledDirective,
+    DialogConfirmComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,9 +64,23 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatInputModule,
     MatTableModule,
     MatCheckboxModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSnackBarModule,
+    HttpClientModule,
+    MatTooltipModule,
+    MatProgressBarModule,
+    MatDialogModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AppInterceptor,
+      multi: true
+    }
+  ],
+  entryComponents: [
+    DialogConfirmComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
