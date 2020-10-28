@@ -12,11 +12,12 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "/turnapp/",
+      "prefix": "turnapp",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "baseHref": "/turnapp/",
             "outputPath": "../server/public/turnapp",
             "index": "src/index.html",
             "main": "src/main.ts",
