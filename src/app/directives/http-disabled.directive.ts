@@ -10,9 +10,11 @@ export class HttpDisabledDirective {
     private element: ElementRef<HTMLButtonElement>,
     private globalService: GlobalService
   ) {
-    this.globalService.getRunning().subscribe((value: boolean) => {
-      this.element.nativeElement.disabled = value;
-    });
+    this.globalService.getRunning().subscribe(
+      (value: boolean) => {
+        this.element.nativeElement.disabled = value;
+      }
+    );
   }
 
 }

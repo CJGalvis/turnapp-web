@@ -17,6 +17,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -36,6 +37,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatStepperModule } from '@angular/material/stepper';
 import { HttpDisabledDirective } from './directives/http-disabled.directive';
 import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confirm.component';
+import { EmployeeRegisterViewComponent } from './views/employees-view/employee-register-view/employee-register-view.component';
+import { EmployeeListViewComponent } from './views/employees-view/employee-list-view/employee-list-view.component';
+import { DialogEditEmployeeComponent } from './components/dialog-edit-employee/dialog-edit-employee.component';
+import { SettingsViewComponent } from './views/settings-view/settings-view.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +51,10 @@ import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confi
     SheduleViewComponent,
     HttpDisabledDirective,
     DialogConfirmComponent,
+    EmployeeRegisterViewComponent,
+    EmployeeListViewComponent,
+    DialogEditEmployeeComponent,
+    SettingsViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,7 +83,8 @@ import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confi
     MatProgressBarModule,
     MatDialogModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatTabsModule
   ],
   providers: [
     MatDatepickerModule,
@@ -86,7 +96,8 @@ import { DialogConfirmComponent } from './components/dialog-confirm/dialog-confi
     }
   ],
   entryComponents: [
-    DialogConfirmComponent
+    DialogConfirmComponent,
+    DialogEditEmployeeComponent
   ],
   bootstrap: [AppComponent]
 })
