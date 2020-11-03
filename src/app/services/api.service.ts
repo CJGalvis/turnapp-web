@@ -45,4 +45,16 @@ export class ApiService {
     const url: string = `${this.API}${endpoint}`;
     return this.http.get<ApiResponse<EmployeeModel>>(url);
   }
+
+  saveTurn(turn: any): Observable<any> {
+    const endpoint: string = `/turns/new`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.post<ApiResponse<any>>(url, turn);
+  }
+
+  getTurns(): Observable<any> {
+    const endpoint: string = `/turns/get`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.get<ApiResponse<any>>(url);
+  }
 }

@@ -6,12 +6,12 @@
     <mat-card-content>
         <form [formGroup]="registerEmployeeForm" (ngSubmit)="saveEmployee()">
             <div fxLayout="row" fxLayoutGap="25px">
-                <mat-form-field fxFlex="25">
+                <mat-form-field appearance="fill" fxFlex="25">
                     <mat-label>Número identificación</mat-label>
                     <input matInput formControlName="identificationNumber" required>
                 </mat-form-field>
 
-                <mat-form-field fxFlex="25">
+                <mat-form-field appearance="fill" fxFlex="25">
                     <mat-label>Tipo Identificación</mat-label>
                     <mat-select formControlName="identificationType" required>
                         <mat-option value="CC">Cédula de ciudadanía</mat-option>
@@ -20,34 +20,34 @@
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field fxFlex="25">
+                <mat-form-field appearance="fill" fxFlex="25">
                     <mat-label>Primer nombre</mat-label>
                     <input matInput formControlName="firstName" required>
                 </mat-form-field>
 
-                <mat-form-field fxFlex="25">
+                <mat-form-field appearance="fill" fxFlex="25">
                     <mat-label>Segundo nombre</mat-label>
                     <input matInput formControlName="seconName">
                 </mat-form-field>
             </div>
 
             <div fxLayout="row" fxLayoutGap="25px">
-                <mat-form-field fxFlex="25">
+                <mat-form-field appearance="fill" fxFlex="25">
                     <mat-label>Primer apellido</mat-label>
                     <input matInput formControlName="firstLastname" required>
                 </mat-form-field>
 
-                <mat-form-field fxFlex="25">
+                <mat-form-field appearance="fill" fxFlex="25">
                     <mat-label>Segundo apellido</mat-label>
                     <input matInput formControlName="seconLastname">
                 </mat-form-field>
 
-                <mat-form-field fxFlex="25">
+                <mat-form-field appearance="fill" fxFlex="25">
                     <mat-label>Email</mat-label>
                     <input matInput formControlName="email" required>
                 </mat-form-field>
 
-                <mat-form-field fxFlex="25">
+                <mat-form-field appearance="fill" fxFlex="25">
                     <mat-label>Categoría</mat-label>
                     <mat-select formControlName="category" required>
                         <mat-option value="VENTAS">Ventas</mat-option>

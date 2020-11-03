@@ -1,60 +1,53 @@
 <div fxLayout="column" fxLayoutGap="15px" class="animated fadeIn">
     <mat-card class="mat-elevation-z4">
         <mat-card-title>
-            Consulta de empleados
+            Gestion de turnos
         </mat-card-title>
 
         <mat-card-content>
-            <form [formGroup]="searchEmployeeFrom" (ngSubmit)="searchEmployee()">
+            <form [formGroup]="turnForm" (ngSubmit)="saveTurn()">
                 <div fxLayout="row" fxLayoutGap="25px">
-                    <mat-form-field appearance="fill" fxFlex="25">
-                        <mat-label>Código</mat-label>
-                        <input matInput formControlName="code">
+                    <mat-form-field appearance="fill" fxFlex="33">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput formControlName="name" required>
                     </mat-form-field>
 
-                    <mat-form-field appearance="fill" fxFlex="25">
-                        <mat-label>Primer nombre</mat-label>
-                        <input matInput formControlName="firstName">
+                    <mat-form-field appearance="fill" fxFlex="33">
+                        <mat-label>Hora inicial</mat-label>
+                        <input matInput [ngxTimepicker]="pickerStart" formControlName="timeStart" required>
+                        <ngx-material-timepicker #pickerStart></ngx-material-timepicker>
                     </mat-form-field>
 
-                    <mat-form-field appearance="fill" fxFlex="25">
-                        <mat-label>Primer apellido</mat-label>
-                        <input matInput formControlName="firstLastname">
-                    </mat-form-field>
-
-                    <mat-form-field appearance="fill" fxFlex="25">
-                        <mat-label>Categoría</mat-label>
-                        <mat-select formControlName="category">
-                            <mat-option value="TODAS">Todas</mat-option>
-                            <mat-option value="VENTAS">Ventas</mat-option>
-                            <mat-option value="ASEO">Aseo</mat-option>
-                            <mat-option value="ADMIN">Administración</mat-option>
-                        </mat-select>
+                    <mat-form-field appearance="fill" fxFlex="33">
+                        <mat-label>Hora final</mat-label>
+                        <input matInput [ngxTimepicker]="pickerEnd" formControlName="timeEnd" required>
+                        <ngx-material-timepicker #pickerEnd></ngx-material-timepicker>
                     </mat-form-field>
                 </div>
 
                 <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="end end">
                     <button appHttpDisabled mat-raised-button color="primary" type="submit">
-                        Buscar
+                        Aceptar
                     </button>
 
-                    <button appHttpDisabled mat-raised-button type="button" (click)="buildFormSearch()">
+                    <button appHttpDisabled mat-raised-button type="button" (click)="buildForm()">
                         Limpiar
                     </button>
                 </div>
             </form>
         </mat-card-content>
+
     </mat-card>
 
     <mat-card class="mat-elevation-z4" fxLayout="column">
         <table mat-table [dataSource]="dataSource">
 
             <!-- Position Column -->
-            <ng-container matColumnDef="code">
-                <th mat-header-cell *matHeaderCellDef> Código </th>
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> Id </th>
                 <td mat-cell *matCellDef="let element">
                     <span class="link-primary">
-                        {{element.code}}
+                        {{cutString(element._id)}}
                     </span>
                 </td>
             </ng-container>
@@ -62,25 +55,19 @@
             <!-- Name Column -->
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef> Nombre </th>
-                <td mat-cell *matCellDef="let element"> {{element.firstName }} </td>
+                <td mat-cell *matCellDef="let element"> {{element.name }} </td>
             </ng-container>
 
             <!-- Weight Column -->
-            <ng-container matColumnDef="lastname">
-                <th mat-header-cell *matHeaderCellDef> Apellido </th>
-                <td mat-cell *matCellDef="let element"> {{element.firstLastname}} </td>
+            <ng-container matColumnDef="timeStart">
+                <th mat-header-cell *matHeaderCellDef> Hora inicial </th>
+                <td mat-cell *matCellDef="let element"> {{element.timeStart}} </td>
             </ng-container>
 
             <!-- Weight Column -->
-            <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef> Email </th>
-                <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-            </ng-container>
-
-            <!-- Symbol Column -->
-            <ng-container matColumnDef="category">
-                <th mat-header-cell *matHeaderCellDef> Categoría </th>
-                <td mat-cell *matCellDef="let element"> {{element.category}} </td>
+            <ng-container matColumnDef="timeEnd">
+                <th mat-header-cell *matHeaderCellDef> Hora final </th>
+                <td mat-cell *matCellDef="let element"> {{element.timeEnd}} </td>
             </ng-container>
 
             <!-- Symbol Column -->

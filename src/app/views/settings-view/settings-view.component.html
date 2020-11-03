@@ -1,1 +1,11 @@
-<p>settings-view works!</p>
+<nav mat-tab-nav-bar class="animated fadeIn fast">
+    <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.link" routerLinkActive #rla="routerLinkActive"
+        [active]="rla.isActive">
+        <mat-icon>{{link.icon}}</mat-icon>
+        {{link.label}}
+    </a>
+</nav>
+
+<div class="container">
+    <router-outlet></router-outlet>
+</div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
+import { forkJoin } from 'rxjs';
 import { ApiErrorModel } from 'src/app/models/ApiErrorModel';
 import { ApiResponse } from 'src/app/models/ApiResponse';
 import { EmployeeModel } from 'src/app/models/EmployeeModel';
@@ -17,20 +18,7 @@ export class SheduleViewComponent implements OnInit {
   public employees: Array<EmployeeModel>;
   public registerSheduleForm: FormGroup;
   public now: Date = new Date;
-  public turns: Array<any> = [
-    {
-      name: 'Tipo 1',
-      value: '06:00 - 14:00'
-    },
-    {
-      name: 'Tipo 2',
-      value: '14:00 - 22:00'
-    },
-    {
-      name: 'Tipo 3',
-      value: '22:00 - 06:00'
-    }
-  ]
+  public turns: Array<any> = [];
 
   constructor(
     private messageService: MessageService,
@@ -40,6 +28,7 @@ export class SheduleViewComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     this.getEmployees();
+    this.getData();
   }
 
   buildForm() {
@@ -61,7 +50,7 @@ export class SheduleViewComponent implements OnInit {
   getEmployees(event?: any) {
     this.apiService.getEmployees(0, 100).subscribe(
       (response: ApiResponse<EmployeeModel>) => {
-        this, this.employees = response.items;
+        this.employees = response.items;
       },
       (error: ApiErrorModel) => {
         this.messageService.shortMessage(error.error.message);
@@ -80,8 +69,18 @@ export class SheduleViewComponent implements OnInit {
   }
 
   setHours(event: MatSelectChange) {
-    const hours = this.turns.find(item => item.name == event.value);
-    this.registerSheduleForm.get('hours').setValue(hours.value);
+    const hours = this.turns.find(item => item._id == event.value);
+    this.registerSheduleForm.get('hours').setValue(`${hours.timeStart} - ${hours.timeEnd}`);
+  }
+
+  getData() {
+    forkJoin([
+      this.apiService.getTurns()
+    ]).subscribe(
+      (response: any) => {
+        this.turns = response[0].items;
+      }
+    )
   }
 
 }

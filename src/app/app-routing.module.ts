@@ -5,6 +5,9 @@ import { EmployeeListViewComponent } from './views/employees-view/employee-list-
 import { EmployeeRegisterViewComponent } from './views/employees-view/employee-register-view/employee-register-view.component';
 import { EmployeesViewComponent } from './views/employees-view/employees-view.component';
 import { HomeViewComponent } from './views/home-view/home-view.component';
+import { SettingsCategoriesViewComponent } from './views/settings-view/settings-categories-view/settings-categories-view.component';
+import { SettingsShedulesViewComponent } from './views/settings-view/settings-shedules-view/settings-shedules-view.component';
+import { SettingsViewComponent } from './views/settings-view/settings-view.component';
 import { SheduleViewComponent } from './views/shedule-view/shedule-view.component';
 
 const routes: Routes = [
@@ -49,6 +52,25 @@ const routes: Routes = [
         path: 'shedules',
         component: SheduleViewComponent
       },
+      {
+        path: 'settings',
+        component: SettingsViewComponent,
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'shedules'
+          },
+          {
+            path: 'shedules',
+            component: SettingsShedulesViewComponent
+          },
+          {
+            path: 'categories',
+            component: SettingsCategoriesViewComponent
+          }
+        ]
+      }
     ]
   }
 ];
