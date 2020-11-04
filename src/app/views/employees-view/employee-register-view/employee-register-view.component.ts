@@ -1,12 +1,8 @@
-import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatStepper } from '@angular/material/stepper';
 import { MatTableDataSource } from '@angular/material/table';
-import { DialogConfirmComponent } from 'src/app/components/dialog-confirm/dialog-confirm.component';
-import { ApiErrorModel } from 'src/app/models/ApiErrorModel';
 import { ApiResponse } from 'src/app/models/ApiResponse';
+import { CategoryModel } from 'src/app/models/CategoryModel';
 import { EmployeeModel } from 'src/app/models/EmployeeModel';
 import { ApiService } from 'src/app/services/api.service';
 import { MessageService } from 'src/app/services/message.service';
@@ -19,6 +15,7 @@ import { MessageService } from 'src/app/services/message.service';
 export class EmployeeRegisterViewComponent implements OnInit {
 
   public registerEmployeeForm: FormGroup;
+  public categoriesList: Array<CategoryModel> = [];
 
   constructor(
     private messageService: MessageService,
@@ -27,6 +24,7 @@ export class EmployeeRegisterViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildFormRegister();
+    this.getCategories();
   }
 
   buildFormRegister() {
@@ -54,6 +52,17 @@ export class EmployeeRegisterViewComponent implements OnInit {
       (response: any) => {
         this.messageService.shortMessage(response.message);
         this.buildFormRegister();
+      },
+      (error: any) => {
+        this.messageService.shortMessage(error.error.message);
+      }
+    )
+  }
+
+  getCategories() {
+    this.apiService.getCategories().subscribe(
+      (response: ApiResponse<any>) => {
+        this.categoriesList = response.items;
       },
       (error: any) => {
         this.messageService.shortMessage(error.error.message);

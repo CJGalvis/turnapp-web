@@ -1,1 +1,91 @@
-<p>settings-categories-view works!</p>
+<div fxLayout="column" fxLayoutGap="15px" class="animated fadeIn">
+    <mat-card class="mat-elevation-z4">
+        <mat-card-title>
+            Gestion de categorías
+        </mat-card-title>
+
+        <mat-card-content>
+            <form [formGroup]="categoryForm" (ngSubmit)="saveCategory()">
+                <div fxLayout="row" fxLayoutGap="25px">
+                    <mat-form-field appearance="fill" fxFlex="33">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput formControlName="name" required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" fxFlex="33">
+                        <mat-label>Descripción</mat-label>
+                        <textarea matInput formControlName="description" rows="3" required></textarea>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="end end">
+                    <button appHttpDisabled mat-raised-button color="primary" type="submit">
+                        Aceptar
+                    </button>
+
+                    <button appHttpDisabled mat-raised-button type="button" (click)="buildForm()">
+                        Limpiar
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+
+    </mat-card>
+
+    <mat-card class="mat-elevation-z4" fxLayout="column">
+        <table mat-table [dataSource]="dataSource">
+
+            <!-- Id Column -->
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> Id </th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="link-primary">
+                        {{cutString(element._id)}}
+                    </span>
+                </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                <td mat-cell *matCellDef="let element"> {{element.name }} </td>
+            </ng-container>
+
+            <!-- Description Column -->
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef> Descripción </th>
+                <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+            </ng-container>
+
+            <!-- actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let element">
+                    <div fxLayout="row" fxLayoutGap="10px">
+                        <button appHttpDisabled mat-icon-button color="warn" type="button" matTooltip="Eliminar"
+                            (click)="goToDelete(element)">
+                            <mat-icon>delete_for_ever</mat-icon>
+                        </button>
+
+                        <button appHttpDisabled mat-icon-button color="primary" type="button" matTooltip="Editar"
+                            (click)="getItemToEdit(element)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+            </tr>
+        </table>
+
+        <div fxLayoutAlign="center end" *ngIf="length == 0">
+            <h4 class="no-data">No hay registros para mostrar.</h4>
+        </div>
+
+        <mat-paginator *ngIf="length != 0" [length]="length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions">
+        </mat-paginator>
+    </mat-card>
+</div>

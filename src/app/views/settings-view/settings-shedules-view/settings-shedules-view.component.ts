@@ -18,6 +18,7 @@ import { TurnModel } from 'src/app/models/TurnModel';
 export class SettingsShedulesViewComponent implements OnInit {
 
   public turnForm: FormGroup;
+  public turnSelected: TurnModel;
   public pageIndex: number = 0;
   public pageSize: number = 10;
   public displayedColumns: string[] = ['id', 'name', 'timeStart', 'timeEnd', 'actions'];
@@ -38,16 +39,32 @@ export class SettingsShedulesViewComponent implements OnInit {
   }
 
   buildForm() {
+    this.turnForm = null;
     this.turnForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       timeStart: new FormControl('', [Validators.required]),
       timeEnd: new FormControl('', [Validators.required]),
     });
+    this.turnSelected = null;
   }
 
   saveTurn() {
     if (this.turnForm.invalid) {
       this.messageService.shortMessage('Los campos marcados en rojo deben ser verificados');
+      return;
+    }
+
+    if (this.turnSelected) {
+      this.apiService.editTurn(this.turnForm.value, this.turnSelected._id).subscribe(
+        (response: ApiResponse<any>) => {
+          this.messageService.shortMessage(response.message);
+          this.buildForm();
+          this.getTurns();
+        },
+        (error: any) => {
+          this.messageService.shortMessage(error.error.message);
+        }
+      )
       return;
     }
 
@@ -67,7 +84,7 @@ export class SettingsShedulesViewComponent implements OnInit {
     this.apiService.getTurns().subscribe(
       (response: ApiResponse<any>) => {
         this.dataSource = new MatTableDataSource<any>(response.items);
-        this.length = response.totalItems;
+        this.length = this.dataSource.data.length;
       },
       (error: any) => {
         this.messageService.shortMessage(error.error.message);
@@ -101,8 +118,9 @@ export class SettingsShedulesViewComponent implements OnInit {
     );
   }
 
-  getItemToEdit(element) {
-
+  getItemToEdit(element: TurnModel) {
+    this.turnSelected = element;
+    this.turnForm.patchValue(this.turnSelected);
   }
 
   cutString(value: string, length?: number) {

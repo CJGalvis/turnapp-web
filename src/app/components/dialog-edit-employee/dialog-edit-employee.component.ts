@@ -12,8 +12,8 @@ import { MessageService } from 'src/app/services/message.service';
 })
 export class DialogEditEmployeeComponent implements OnInit {
 
-  public registerEmployeeForm: FormGroup;
-  public EmployeeSelected: EmployeeModel
+  public editEmployeeForm: FormGroup;
+  public turnSelected: EmployeeModel;
 
   constructor(
     private messageService: MessageService,
@@ -23,13 +23,13 @@ export class DialogEditEmployeeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.buildFormRegister();
-    this.EmployeeSelected = this.data;
-    this.registerEmployeeForm.patchValue(this.EmployeeSelected);
+    this.buildForm();
+    this.turnSelected = this.data;
+    this.editEmployeeForm.patchValue(this.turnSelected);
   }
 
-  buildFormRegister() {
-    this.registerEmployeeForm = new FormGroup({
+  buildForm() {
+    this.editEmployeeForm = new FormGroup({
       identificationNumber: new FormControl('', [Validators.required]),
       identificationType: new FormControl('', [Validators.required]),
       firstName: new FormControl('', [Validators.required]),
@@ -42,20 +42,20 @@ export class DialogEditEmployeeComponent implements OnInit {
   }
 
   saveEmployee() {
-    if (this.registerEmployeeForm.invalid) {
+    if (this.editEmployeeForm.invalid) {
       this.messageService.shortMessage('Los campos marcados en rojo deben ser verificacos');
       return;
     }
     const newEmployee: EmployeeModel = {
-      ...this.registerEmployeeForm.value
+      ...this.editEmployeeForm.value
     }
-    newEmployee.code = this.EmployeeSelected.code;
+    newEmployee.code = this.turnSelected.code;
 
-    this.apiService.editEmployee(newEmployee, this.EmployeeSelected.code).subscribe(
+    this.apiService.editEmployee(newEmployee, this.turnSelected.code).subscribe(
       (response: any) => {
         this.messageService.shortMessage(response.message);
-        this.EmployeeSelected = null;
-        this.buildFormRegister();
+        this.turnSelected = null;
+        this.buildForm();
         this.dialogRef.close(true);
       },
       (error: any) => {

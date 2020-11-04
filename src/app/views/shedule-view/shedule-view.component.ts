@@ -4,6 +4,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { forkJoin } from 'rxjs';
 import { ApiErrorModel } from 'src/app/models/ApiErrorModel';
 import { ApiResponse } from 'src/app/models/ApiResponse';
+import { CategoryModel } from 'src/app/models/CategoryModel';
 import { EmployeeModel } from 'src/app/models/EmployeeModel';
 import { ApiService } from 'src/app/services/api.service';
 import { MessageService } from 'src/app/services/message.service';
@@ -19,6 +20,7 @@ export class SheduleViewComponent implements OnInit {
   public registerSheduleForm: FormGroup;
   public now: Date = new Date;
   public turns: Array<any> = [];
+  public categoriesList: Array<CategoryModel> = [];
 
   constructor(
     private messageService: MessageService,
@@ -75,10 +77,12 @@ export class SheduleViewComponent implements OnInit {
 
   getData() {
     forkJoin([
-      this.apiService.getTurns()
+      this.apiService.getTurns(),
+      this.apiService.getCategories()
     ]).subscribe(
       (response: any) => {
         this.turns = response[0].items;
+        this.categoriesList = response[1].items;
       }
     )
   }

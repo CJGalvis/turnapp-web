@@ -24,11 +24,10 @@
 
                     <mat-form-field appearance="fill" fxFlex="25">
                         <mat-label>Categoría</mat-label>
-                        <mat-select formControlName="category">
-                            <mat-option value="TODAS">Todas</mat-option>
-                            <mat-option value="VENTAS">Ventas</mat-option>
-                            <mat-option value="ASEO">Aseo</mat-option>
-                            <mat-option value="ADMIN">Administración</mat-option>
+                        <mat-select formControlName="category" required>
+                            <mat-option *ngFor="let item of categoriesList" [value]="item._id">
+                                {{ item.name}}
+                            </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -93,7 +92,7 @@
                             <mat-icon>delete_for_ever</mat-icon>
                         </button>
 
-                        <button appHttpDisabled mat-icon-button color="accent" type="button" matTooltip="Editar"
+                        <button appHttpDisabled mat-icon-button color="primary" type="button" matTooltip="Editar"
                             (click)="getItemToEdit(element)">
                             <mat-icon>edit</mat-icon>
                         </button>

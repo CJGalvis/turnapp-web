@@ -27,23 +27,15 @@
 
                     <mat-form-field appearance="fill" fxFlex="25">
                         <mat-label>Categoría</mat-label>
-                        <mat-select formControlName="category">
-                            <mat-option value="VENTAS">Ventas</mat-option>
-                            <mat-option value="ASEO">Aseo</mat-option>
-                            <mat-option value="ADMIN">Administración</mat-option>
+                        <mat-select formControlName="category" required>
+                            <mat-option *ngFor="let item of categoriesList" [value]="item._id">
+                                {{ item.name}}
+                            </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
 
                 <div fxLayout="row" fxLayoutGap="25px">
-                    <!-- <mat-form-field fxFlex="33">
-                        <mat-label>Fecha de turno</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="date" [min]="now"
-                            (click)="picker.open()" required>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field> -->
-
                     <mat-form-field appearance="fill" fxFlex="33">
                         <mat-label>Fecha de turno</mat-label>
                         <mat-date-range-input [rangePicker]="picker">

@@ -49,7 +49,6 @@ import { DialogEditEmployeeComponent } from './components/dialog-edit-employee/d
 import { SettingsViewComponent } from './views/settings-view/settings-view.component';
 import { SettingsShedulesViewComponent } from './views/settings-view/settings-shedules-view/settings-shedules-view.component';
 import { SettingsCategoriesViewComponent } from './views/settings-view/settings-categories-view/settings-categories-view.component';
-import { DialogEditTurnComponent } from './components/dialog-edit-turn/dialog-edit-turn.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +65,6 @@ import { DialogEditTurnComponent } from './components/dialog-edit-turn/dialog-ed
     SettingsViewComponent,
     SettingsShedulesViewComponent,
     SettingsCategoriesViewComponent,
-    DialogEditTurnComponent,
   ],
   imports: [
     BrowserModule,
@@ -111,7 +109,7 @@ import { DialogEditTurnComponent } from './components/dialog-edit-turn/dialog-ed
   ],
   entryComponents: [
     DialogConfirmComponent,
-    DialogEditEmployeeComponent
+    DialogEditEmployeeComponent,
   ],
   bootstrap: [AppComponent]
 })

@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ApiResponse } from '../models/ApiResponse';
+import { CategoryModel } from '../models/CategoryModel';
 import { EmployeeModel } from '../models/EmployeeModel';
+import { TurnModel } from '../models/TurnModel';
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +63,36 @@ export class ApiService {
   deleteTurn(code: string): Observable<any> {
     const endpoint: string = `/turns/delete/${code}`;
     const url: string = `${this.API}${endpoint}`;
-    return this.http.delete<ApiResponse<EmployeeModel>>(url);
+    return this.http.delete<ApiResponse<TurnModel>>(url);
+  }
+
+  editTurn(data: TurnModel, code: string): Observable<any> {
+    const endpoint: string = `/turns/put/${code}`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.put<ApiResponse<TurnModel>>(url, data);
+  }
+
+  saveCategory(turn: any): Observable<any> {
+    const endpoint: string = `/categories/new`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.post<ApiResponse<any>>(url, turn);
+  }
+
+  getCategories(): Observable<any> {
+    const endpoint: string = `/categories/get`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.get<ApiResponse<any>>(url);
+  }
+
+  deleteCategory(code: string): Observable<any> {
+    const endpoint: string = `/categories/delete/${code}`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.get<ApiResponse<CategoryModel>>(url);
+  }
+
+  editCategory(data: CategoryModel, code: string): Observable<any> {
+    const endpoint: string = `/categories/put/${code}`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.put<ApiResponse<CategoryModel>>(url, data);
   }
 }
