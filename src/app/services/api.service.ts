@@ -57,4 +57,10 @@ export class ApiService {
     const url: string = `${this.API}${endpoint}`;
     return this.http.get<ApiResponse<any>>(url);
   }
+
+  deleteTurn(code: string): Observable<any> {
+    const endpoint: string = `/turns/delete/${code}`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.delete<ApiResponse<EmployeeModel>>(url);
+  }
 }
