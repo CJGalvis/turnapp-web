@@ -26,6 +26,12 @@ export class SettingsViewComponent implements OnInit {
         index: 1,
         icon: 'category'
       },
+      {
+        label: 'Tipos de identificación',
+        link: './identification-types',
+        index: 2,
+        icon: 'account_box'
+      },
     ];
   }
 

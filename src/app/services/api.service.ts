@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 import { ApiResponse } from '../models/ApiResponse';
 import { CategoryModel } from '../models/CategoryModel';
 import { EmployeeModel } from '../models/EmployeeModel';
+import { IdentificationTypeModel } from '../models/IdentificationTypeModel';
 import { TurnModel } from '../models/TurnModel';
 
 @Injectable({
@@ -94,5 +95,29 @@ export class ApiService {
     const endpoint: string = `/categories/put/${code}`;
     const url: string = `${this.API}${endpoint}`;
     return this.http.put<ApiResponse<CategoryModel>>(url, data);
+  }
+
+  getIdentificationTypes() {
+    const endpoint: string = `/identification-types/get`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.get<ApiResponse<any>>(url);
+  }
+
+  deleteIdentification(code: string): Observable<any> {
+    const endpoint: string = `/identification-types/delete/${code}`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.get<ApiResponse<CategoryModel>>(url);
+  }
+
+  editIdentification(data: IdentificationTypeModel, code: string): Observable<any> {
+    const endpoint: string = `/identification-types/put/${code}`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.put<ApiResponse<CategoryModel>>(url, data);
+  }
+
+  saveIdentification(turn: any): Observable<any> {
+    const endpoint: string = `/identification-types/new`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.post<ApiResponse<any>>(url, turn);
   }
 }

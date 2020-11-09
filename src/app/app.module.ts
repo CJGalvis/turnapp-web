@@ -49,6 +49,12 @@ import { DialogEditEmployeeComponent } from './components/dialog-edit-employee/d
 import { SettingsViewComponent } from './views/settings-view/settings-view.component';
 import { SettingsShedulesViewComponent } from './views/settings-view/settings-shedules-view/settings-shedules-view.component';
 import { SettingsCategoriesViewComponent } from './views/settings-view/settings-categories-view/settings-categories-view.component';
+import { LoginViewComponent } from './views/login-view/login-view.component';
+import { SettingsIdentificationTypesViewComponent } from './views/settings-view/settings-identification-types-view/settings-identification-types-view.component';
+import { WithoutPermissionsViewComponent } from './views/without-permissions-view/without-permissions-view.component';
+import { PermissionsViewComponent } from './views/permissions-view/permissions-view.component';
+import { ResetPasswordViewComponent } from './views/reset-password-view/reset-password-view.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +71,12 @@ import { SettingsCategoriesViewComponent } from './views/settings-view/settings-
     SettingsViewComponent,
     SettingsShedulesViewComponent,
     SettingsCategoriesViewComponent,
+    LoginViewComponent,
+    SettingsIdentificationTypesViewComponent,
+    WithoutPermissionsViewComponent,
+    PermissionsViewComponent,
+    ResetPasswordViewComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

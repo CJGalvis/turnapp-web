@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { GlobalService } from 'src/app/services/global.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,7 +26,8 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     private breakpointObserver: BreakpointObserver,
     private globalService: GlobalService,
     private cdRef: ChangeDetectorRef,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngAfterViewChecked(): void {
@@ -34,7 +36,12 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-   
+
+  }
+
+  logout() {
+    localStorage.removeItem(this.globalService.nameApp);
+    this.router.navigate(['']);
   }
 
 }

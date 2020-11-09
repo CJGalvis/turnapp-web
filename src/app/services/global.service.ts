@@ -7,6 +7,7 @@ import { Subject, Observable } from 'rxjs';
 export class GlobalService {
 
   public isRunning: Subject<boolean>;
+  public nameApp: string = 'turnapp';
 
   constructor() {
     this.isRunning = new Subject<boolean>();

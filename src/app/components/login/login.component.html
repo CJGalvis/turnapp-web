@@ -1,0 +1,44 @@
+<mat-card class="mat-elevation-z0">
+    <mat-card-title fxLayoutAlign="center center">
+        Bienvenidos a TurnApp
+    </mat-card-title>
+    <br>
+
+    <mat-card-content fxLayout="column">
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+            <div fxLayout="column" fxLayoutGap="25px">
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Usuario</mat-label>
+                    <input matInput formControlName="user" required>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" fxFlex>
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput formControlName="pass" required type="password">
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="column">
+                <button appHttpDisabled mat-raised-button color="primary" type="submit">
+                    Buscar
+                </button>
+            </div>
+        </form>
+        <br>
+
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <a routerLink="/reset-password" class="link">
+                ¿Olvidó su contraseña?
+            </a>
+
+            <span>
+                ¿No tiene cuenta? regístrate
+                <a routerLink="/" class="link">
+                    aquí.
+                </a>
+            </span>
+
+            <span class="text-ghost">Copyright {{ currentYear| date: 'yyyy'}} © Galvis Dev</span>
+        </div>
+    </mat-card-content>
+</mat-card>
