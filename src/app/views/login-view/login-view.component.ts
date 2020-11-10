@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'turnapp-login-view',
@@ -10,7 +12,12 @@ export class LoginViewComponent implements OnInit {
 
   loginForm: FormGroup;
 
-  constructor() { }
+  constructor(
+    private iconRegistry: MatIconRegistry,
+    private sanitizer: DomSanitizer
+  ) {
+    this.iconRegistry.addSvgIcon('img_1', this.sanitizer.bypassSecurityTrustResourceUrl('./assets/login/undraw_Spreadsheet_re_cn18.svg'));
+  }
 
   ngOnInit(): void {
     this.buildForm();
