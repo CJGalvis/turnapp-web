@@ -19,6 +19,12 @@ export class ApiService {
     this.API = environment.API;
   }
 
+  getCurrent() {
+    const endpoint: string = `/auth/tennant/current`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.get(url);
+  }
+
   getEmployees(pageIndex: number, pageSize: number): Observable<ApiResponse<EmployeeModel>> {
     const endpoint: string = `/employees/get?skip=${pageIndex}&limit=${pageSize}`;
     const url: string = `${this.API}${endpoint}`;

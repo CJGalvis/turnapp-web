@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import { LoginModel } from '../models/LoginModel';
-import { Observable } from 'rxjs';
-import { ApiResponse } from '../models/ApiResponse';
 import { UserModel } from '../models/UserModel';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import * as jwt_decode from 'jwt-decode';
+import jwt_decode from "jwt-decode";
 import { TokenModel } from '../models/TokenModel';
 
 @Injectable({
@@ -21,9 +18,10 @@ export class AuthService {
         this.API = environment.API;
     }
 
-    login(body: LoginModel): Observable<ApiResponse<UserModel>> {
-        const endoint = 'login';
-        return this.http.post<ApiResponse<UserModel>>(`${this.API}${endoint}`, body);
+    login(data: any) {
+        const endpoint: string = `/auth/tennant/login`;
+        const url: string = `${this.API}${endpoint}`;
+        return this.http.post(url, data);
     }
 
     hasTokenSession() {

@@ -21,7 +21,7 @@
           *ngIf="isHandset$ | async">
           <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
-        <span>TurnApp</span>
+        <span>{{currentUser?.name}}</span>
 
         <div fxFlex fxLayout="row" fxLayoutAlign="end end">
           <button mat-icon-button matTooltip="Ayuda">

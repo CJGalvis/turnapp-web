@@ -15,13 +15,13 @@
         <form [formGroup]="loginForm" (ngSubmit)="login()">
             <div fxLayout="column" fxLayoutGap="25px">
                 <mat-form-field appearance="fill" fxFlex>
-                    <mat-label>Usuario</mat-label>
-                    <input matInput formControlName="user" required>
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" required>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill" fxFlex>
                     <mat-label>Contraseña</mat-label>
-                    <input matInput formControlName="pass" required type="password">
+                    <input matInput formControlName="password" required type="password">
                 </mat-form-field>
             </div>
 

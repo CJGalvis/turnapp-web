@@ -5,6 +5,8 @@ import { map, shareReplay } from 'rxjs/operators';
 import { GlobalService } from 'src/app/services/global.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +16,7 @@ import { Router } from '@angular/router';
 export class DashboardComponent implements OnInit, AfterViewChecked {
 
   public isRunning: boolean = false;
-  public currentUser: string;
+  public currentUser: any;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -26,8 +28,9 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     private breakpointObserver: BreakpointObserver,
     private globalService: GlobalService,
     private cdRef: ChangeDetectorRef,
-    private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private apiService: ApiService,
+    private messageService: MessageService
   ) { }
 
   ngAfterViewChecked(): void {
@@ -36,11 +39,23 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
+    this.getDataCurrent();
+  }
 
+  getDataCurrent() {
+    this.apiService.getCurrent().subscribe(
+      (response: any) => {
+        this.currentUser = response.data;
+      },
+      (err: any) => {
+        const messageError = err.error.message || 'Ocurrió un error desconocido';
+        this.messageService.longMessage(messageError);
+      }
+    )
   }
 
   logout() {
-    localStorage.removeItem(this.globalService.nameApp);
+    localStorage.clear();
     this.router.navigate(['']);
   }
 

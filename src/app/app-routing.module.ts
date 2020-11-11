@@ -13,6 +13,7 @@ import { SheduleViewComponent } from './views/shedule-view/shedule-view.componen
 import { PermissionsViewComponent } from './views/permissions-view/permissions-view.component';
 import { LoginViewComponent } from './views/login-view/login-view.component';
 import { ResetPasswordViewComponent } from './views/reset-password-view/reset-password-view.component';
+import { AuthGuard } from 'src/app/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -31,6 +32,7 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'turnapp-login',
@@ -13,7 +16,9 @@ export class LoginComponent implements OnInit {
   public currentYear: Date = new Date();
 
   constructor(
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -22,12 +27,25 @@ export class LoginComponent implements OnInit {
 
   buildForm() {
     this.loginForm = new FormGroup({
-      user: new FormControl('', [Validators.required]),
-      pass: new FormControl('', [Validators.required])
+      email: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required])
     })
   }
 
   login() {
-    this.router.navigate(['/dashboard'])
+    if (this.loginForm.invalid) {
+      this.messageService.shortMessage('Debe ingresar credenciales válidas');
+      return;
+    }
+    this.authService.login(this.loginForm.value).subscribe(
+      (response: any) => {
+        this.authService.setToken(response.token);
+        this.router.navigate(['/dashboard']);
+      },
+      (err: any) => {
+        const messageError = err.error.message || 'Ocurrió un error desconocido';
+        this.messageService.longMessage(messageError);
+      }
+    )
   }
 }
