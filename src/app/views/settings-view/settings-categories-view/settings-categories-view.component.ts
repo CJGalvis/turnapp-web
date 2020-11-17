@@ -26,6 +26,7 @@ export class SettingsCategoriesViewComponent implements OnInit {
   public length: number = 0;
   public selection = new SelectionModel<any>(true, []);
   public pageSizeOptions: Array<number> = [5, 10, 15];
+  public hasErrors: boolean;
 
   constructor(
     private messageService: MessageService,
@@ -45,11 +46,13 @@ export class SettingsCategoriesViewComponent implements OnInit {
       description: new FormControl('', [Validators.required]),
     });
     this.categorySelected = null;
+    this.hasErrors = false;
   }
 
   saveCategory() {
     if (this.categoryForm.invalid) {
       this.messageService.shortMessage('Los campos marcados en rojo deben ser verificados');
+      this.hasErrors = true;
       return;
     }
 

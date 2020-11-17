@@ -21,6 +21,7 @@ export class SheduleViewComponent implements OnInit {
   public now: Date = new Date;
   public turns: Array<any> = [];
   public categoriesList: Array<CategoryModel> = [];
+  public hasErrors: boolean;
 
   constructor(
     private messageService: MessageService,
@@ -43,6 +44,7 @@ export class SheduleViewComponent implements OnInit {
       type: new FormControl('', [Validators.required]),
       hours: new FormControl({ value: '', disabled: true }, [Validators.required]),
     })
+    this.hasErrors = false;
   }
 
   saveShedule() {

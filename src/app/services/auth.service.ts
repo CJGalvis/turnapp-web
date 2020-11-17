@@ -19,7 +19,7 @@ export class AuthService {
     }
 
     login(data: any) {
-        const endpoint: string = `/auth/tennant/login`;
+        const endpoint: string = `/auth/tenant/login`;
         const url: string = `${this.API}${endpoint}`;
         return this.http.post(url, data);
     }

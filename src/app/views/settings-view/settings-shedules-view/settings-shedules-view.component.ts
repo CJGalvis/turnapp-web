@@ -26,6 +26,7 @@ export class SettingsShedulesViewComponent implements OnInit {
   public length: number = 0;
   public selection = new SelectionModel<any>(true, []);
   public pageSizeOptions: Array<number> = [5, 10, 15];
+  public hasErrors: boolean;
 
   constructor(
     private messageService: MessageService,
@@ -46,11 +47,13 @@ export class SettingsShedulesViewComponent implements OnInit {
       timeEnd: new FormControl('', [Validators.required]),
     });
     this.turnSelected = null;
+    this.hasErrors = false;
   }
 
   saveTurn() {
     if (this.turnForm.invalid) {
       this.messageService.shortMessage('Los campos marcados en rojo deben ser verificados');
+      this.hasErrors = true;
       return;
     }
 

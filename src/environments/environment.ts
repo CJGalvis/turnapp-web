@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  //API: 'http://localhost:3000'
-  API: 'https://turnapp-api.herokuapp.com'
+  API: 'http://localhost:3000'
+  //API: 'https://turnapp-api.herokuapp.com'
 };
 
 /*

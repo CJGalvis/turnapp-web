@@ -20,7 +20,7 @@ export class ApiService {
   }
 
   getCurrent() {
-    const endpoint: string = `/auth/tennant/current`;
+    const endpoint: string = `/auth/tenant/current`;
     const url: string = `${this.API}${endpoint}`;
     return this.http.get(url);
   }

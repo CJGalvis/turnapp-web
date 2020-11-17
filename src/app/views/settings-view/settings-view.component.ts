@@ -15,7 +15,7 @@ export class SettingsViewComponent implements OnInit {
   constructor(private router: Router) {
     this.navLinks = [
       {
-        label: 'Turnos',
+        label: 'Horarios',
         link: './shedules',
         index: 0,
         icon: 'av_timer'

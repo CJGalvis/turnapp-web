@@ -7,7 +7,8 @@
         <mat-card-content>
             <form [formGroup]="registerSheduleForm" (ngSubmit)="saveShedule()">
                 <div fxLayout="row" fxLayoutGap="25px">
-                    <mat-form-field appearance="fill" fxFlex="25">
+                    <mat-form-field appearance="fill" fxFlex="25"
+                        [class.mat-form-field-invalid]="hasErrors && registerSheduleForm.get('firstName')?.invalid">
                         <mat-label>Código</mat-label>
                         <mat-select formControlName="employeeCode" required
                             (selectionChange)="getEmployeeSelected($event)">
@@ -36,7 +37,8 @@
                 </div>
 
                 <div fxLayout="row" fxLayoutGap="25px">
-                    <mat-form-field appearance="fill" fxFlex="33">
+                    <mat-form-field appearance="fill" fxFlex="33"
+                        [class.mat-form-field-invalid]="hasErrors && registerSheduleForm.get('date')?.invalid">
                         <mat-label>Fecha de turno</mat-label>
                         <mat-date-range-input [rangePicker]="picker">
                             <input matStartDate placeholder="Start date" formControlName="date" [min]="now"
@@ -48,14 +50,16 @@
                         <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
 
-                    <mat-form-field appearance="fill" fxFlex="33">
+                    <mat-form-field appearance="fill" fxFlex="33"
+                        [class.mat-form-field-invalid]="hasErrors && registerSheduleForm.get('type')?.invalid">
                         <mat-label>Tipo turno</mat-label>
                         <mat-select formControlName="type" (selectionChange)="setHours($event)" required>
                             <mat-option [value]="item._id" *ngFor="let item of turns">{{ item.name }}</mat-option>
                         </mat-select>
                     </mat-form-field>
 
-                    <mat-form-field appearance="fill" fxFlex="33">
+                    <mat-form-field appearance="fill" fxFlex="33"
+                        [class.mat-form-field-invalid]="hasErrors && registerSheduleForm.get('hours')?.invalid">
                         <mat-label>Horario</mat-label>
                         <input matInput formControlName="hours" required>
                     </mat-form-field>

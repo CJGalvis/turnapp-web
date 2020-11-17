@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import { forkJoin } from 'rxjs';
 import { ApiResponse } from 'src/app/models/ApiResponse';
 import { CategoryModel } from 'src/app/models/CategoryModel';
 import { EmployeeModel } from 'src/app/models/EmployeeModel';
@@ -16,6 +17,8 @@ export class EmployeeRegisterViewComponent implements OnInit {
 
   public registerEmployeeForm: FormGroup;
   public categoriesList: Array<CategoryModel> = [];
+  public identificationTypes: Array<any> = [];
+  public hasErrors: boolean;
 
   constructor(
     private messageService: MessageService,
@@ -38,11 +41,13 @@ export class EmployeeRegisterViewComponent implements OnInit {
       email: new FormControl('', [Validators.required]),
       category: new FormControl('', [Validators.required]),
     });
+    this.hasErrors = false;
   }
 
   saveEmployee() {
     if (this.registerEmployeeForm.invalid) {
       this.messageService.shortMessage('Los campos marcados en rojo deben ser verificacos');
+      this.hasErrors = true;
       return;
     }
     const newEmployee: EmployeeModel = {
@@ -60,9 +65,13 @@ export class EmployeeRegisterViewComponent implements OnInit {
   }
 
   getCategories() {
-    this.apiService.getCategories().subscribe(
-      (response: ApiResponse<any>) => {
-        this.categoriesList = response.items;
+    forkJoin([
+      this.apiService.getCategories(),
+      this.apiService.getIdentificationTypes()
+    ]).subscribe(
+      (response: any) => {
+        this.categoriesList = response[0].items;
+        this.identificationTypes = response[1].items;
       },
       (error: any) => {
         this.messageService.shortMessage(error.error.message);

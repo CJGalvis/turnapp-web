@@ -6,21 +6,24 @@
     <mat-card-content>
         <form [formGroup]="registerEmployeeForm" (ngSubmit)="saveEmployee()">
             <div fxLayout="row" fxLayoutGap="25px">
-                <mat-form-field appearance="fill" fxFlex="25">
+                <mat-form-field appearance="fill" fxFlex="25"
+                    [class.mat-form-field-invalid]="hasErrors && registerEmployeeForm.get('identificationNumber')?.invalid">
                     <mat-label>Número identificación</mat-label>
                     <input matInput formControlName="identificationNumber" required>
                 </mat-form-field>
 
-                <mat-form-field appearance="fill" fxFlex="25">
+                <mat-form-field appearance="fill" fxFlex="25"
+                    [class.mat-form-field-invalid]="hasErrors && registerEmployeeForm.get('identificationType')?.invalid">
                     <mat-label>Tipo Identificación</mat-label>
                     <mat-select formControlName="identificationType" required>
-                        <mat-option value="CC">Cédula de ciudadanía</mat-option>
-                        <mat-option value="CE">Cédula extrangera</mat-option>
-                        <mat-option value="LC">Licencia de conducción</mat-option>
+                        <mat-option *ngFor="let item of identificationTypes" [value]="item._id">
+                            {{ item.description}}
+                        </mat-option>
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field appearance="fill" fxFlex="25">
+                <mat-form-field appearance="fill" fxFlex="25"
+                    [class.mat-form-field-invalid]="hasErrors && registerEmployeeForm.get('firstName')?.invalid">
                     <mat-label>Primer nombre</mat-label>
                     <input matInput formControlName="firstName" required>
                 </mat-form-field>
@@ -32,7 +35,8 @@
             </div>
 
             <div fxLayout="row" fxLayoutGap="25px">
-                <mat-form-field appearance="fill" fxFlex="25">
+                <mat-form-field appearance="fill" fxFlex="25"
+                    [class.mat-form-field-invalid]="hasErrors && registerEmployeeForm.get('firstLastname')?.invalid">
                     <mat-label>Primer apellido</mat-label>
                     <input matInput formControlName="firstLastname" required>
                 </mat-form-field>
@@ -42,12 +46,14 @@
                     <input matInput formControlName="seconLastname">
                 </mat-form-field>
 
-                <mat-form-field appearance="fill" fxFlex="25">
+                <mat-form-field appearance="fill" fxFlex="25"
+                    [class.mat-form-field-invalid]="hasErrors && registerEmployeeForm.get('email')?.invalid">
                     <mat-label>Email</mat-label>
                     <input matInput formControlName="email" required>
                 </mat-form-field>
 
-                <mat-form-field appearance="fill" fxFlex="25">
+                <mat-form-field appearance="fill" fxFlex="25"
+                    [class.mat-form-field-invalid]="hasErrors && registerEmployeeForm.get('category')?.invalid">
                     <mat-label>Categoría</mat-label>
                     <mat-select formControlName="category" required>
                         <mat-option *ngFor="let item of categoriesList" [value]="item._id">
