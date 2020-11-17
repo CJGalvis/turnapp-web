@@ -1,6 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { forkJoin } from 'rxjs';
+import { CategoryModel } from 'src/app/models/CategoryModel';
 import { EmployeeModel } from 'src/app/models/EmployeeModel';
 import { ApiService } from 'src/app/services/api.service';
 import { MessageService } from 'src/app/services/message.service';
@@ -14,6 +16,9 @@ export class DialogEditEmployeeComponent implements OnInit {
 
   public editEmployeeForm: FormGroup;
   public turnSelected: EmployeeModel;
+  public hasErrors: boolean;
+  public categoriesList: Array<CategoryModel> = [];
+  public identificationTypes: Array<any> = [];
 
   constructor(
     private messageService: MessageService,
@@ -24,6 +29,7 @@ export class DialogEditEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
+    this.getDataInit();
     this.turnSelected = this.data;
     this.editEmployeeForm.patchValue(this.turnSelected);
   }
@@ -39,11 +45,13 @@ export class DialogEditEmployeeComponent implements OnInit {
       email: new FormControl('', [Validators.required]),
       category: new FormControl('', [Validators.required]),
     });
+    this.hasErrors = false;
   }
 
   saveEmployee() {
     if (this.editEmployeeForm.invalid) {
       this.messageService.shortMessage('Los campos marcados en rojo deben ser verificacos');
+      this.hasErrors = true;
       return;
     }
     const newEmployee: EmployeeModel = {
@@ -64,4 +72,18 @@ export class DialogEditEmployeeComponent implements OnInit {
     )
   }
 
+  getDataInit() {
+    forkJoin([
+      this.apiService.getCategories(),
+      this.apiService.getIdentificationTypes()
+    ]).subscribe(
+      (response: any) => {
+        this.categoriesList = response[0].items;
+        this.identificationTypes = response[1].items;
+      },
+      (error: any) => {
+        this.messageService.shortMessage(error.error.message);
+      }
+    )
+  }
 }

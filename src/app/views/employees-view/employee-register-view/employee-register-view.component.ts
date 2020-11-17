@@ -27,7 +27,7 @@ export class EmployeeRegisterViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildFormRegister();
-    this.getCategories();
+    this.getDataInit();
   }
 
   buildFormRegister() {
@@ -64,7 +64,7 @@ export class EmployeeRegisterViewComponent implements OnInit {
     )
   }
 
-  getCategories() {
+  getDataInit() {
     forkJoin([
       this.apiService.getCategories(),
       this.apiService.getIdentificationTypes()
