@@ -28,7 +28,7 @@ export class AuthGuard implements CanActivate {
         return true;
       }
     } else {
-      localStorage.removeItem('turnapp');
+      localStorage.clear();
       this.router.navigate(['']);
       return false;
     }
