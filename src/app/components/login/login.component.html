@@ -26,7 +26,7 @@
             </div>
 
             <div fxLayout="column">
-                <button appHttpDisabled mat-raised-button color="primary" type="submit">
+                <button [disabled]="isRunning" mat-raised-button color="primary" type="submit">
                     Buscar
                 </button>
             </div>

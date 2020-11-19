@@ -1,3 +1,5 @@
+import { CategoryModel } from './CategoryModel';
+
 export interface EmployeeModel {
     code: string;
     identificationNumber?: string;
@@ -7,7 +9,7 @@ export interface EmployeeModel {
     firstLastname: string;
     seconLastname?: string;
     email?: string;
-    category: string;
+    category: CategoryModel;
     created?: Date;
     position?: number;
 }

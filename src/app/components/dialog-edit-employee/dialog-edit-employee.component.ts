@@ -15,7 +15,7 @@ import { MessageService } from 'src/app/services/message.service';
 export class DialogEditEmployeeComponent implements OnInit {
 
   public editEmployeeForm: FormGroup;
-  public turnSelected: EmployeeModel;
+  public employeeSelected: EmployeeModel;
   public hasErrors: boolean;
   public categoriesList: Array<CategoryModel> = [];
   public identificationTypes: Array<any> = [];
@@ -30,14 +30,15 @@ export class DialogEditEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     this.getDataInit();
-    this.turnSelected = this.data;
-    this.editEmployeeForm.patchValue(this.turnSelected);
+    this.employeeSelected = this.data;
+    this.editEmployeeForm.patchValue(this.employeeSelected);
+    this.editEmployeeForm.get('category').setValue(this.employeeSelected.category._id);
   }
 
   buildForm() {
     this.editEmployeeForm = new FormGroup({
-      identificationNumber: new FormControl('', [Validators.required]),
-      identificationType: new FormControl('', [Validators.required]),
+      identificationNumber: new FormControl({ value: '', disabled: true }, [Validators.required]),
+      identificationType: new FormControl({ value: '', disabled: true }, [Validators.required]),
       firstName: new FormControl('', [Validators.required]),
       seconName: new FormControl(''),
       firstLastname: new FormControl('', [Validators.required]),
@@ -57,12 +58,12 @@ export class DialogEditEmployeeComponent implements OnInit {
     const newEmployee: EmployeeModel = {
       ...this.editEmployeeForm.value
     }
-    newEmployee.code = this.turnSelected.code;
+    newEmployee.code = this.employeeSelected.code;
 
-    this.apiService.editEmployee(newEmployee, this.turnSelected.code).subscribe(
+    this.apiService.editEmployee(newEmployee, this.employeeSelected.code).subscribe(
       (response: any) => {
         this.messageService.shortMessage(response.message);
-        this.turnSelected = null;
+        this.employeeSelected = null;
         this.buildForm();
         this.dialogRef.close(true);
       },

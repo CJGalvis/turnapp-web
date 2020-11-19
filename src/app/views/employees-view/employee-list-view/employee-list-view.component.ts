@@ -47,18 +47,31 @@ export class EmployeeListViewComponent implements OnInit {
       code: new FormControl(''),
       firstName: new FormControl(''),
       firstLastname: new FormControl(''),
-      category: new FormControl('TODAS'),
+      category: new FormControl([]),
     })
   }
 
   searchEmployee() {
-
+    this.pageIndex = 0;
+    this.pageSize = 10;
+    const filter = this.searchEmployeeFrom.value
+    let categoriesSelected: Array<string> = this.searchEmployeeFrom.get('category').value || [];
+    if (categoriesSelected.length == 0) {
+      categoriesSelected = this.categoriesList.map(item => item._id);
+    }
+    filter.cateogry = categoriesSelected;
+    this.apiService.getEmployeesFilter(filter, this.pageIndex, this.pageSize).subscribe(
+      (response: ApiResponse<EmployeeModel>) => {
+        this.dataSource = new MatTableDataSource<EmployeeModel>(response.items);
+        this.length = response.totalItems;
+      }
+    )
   }
 
   getEmployees(event?: any) {
-    const pageIndex = event ? event.pageIndex : this.pageIndex;
-    const pageSize = event ? event.pageSize : this.pageSize;
-    this.apiService.getEmployees(pageIndex, pageSize).subscribe(
+    this.pageIndex = event ? event.pageIndex : this.pageIndex;
+    this.pageSize = event ? event.pageSize : this.pageSize;
+    this.apiService.getEmployees(this.pageIndex, this.pageSize).subscribe(
       (response: ApiResponse<EmployeeModel>) => {
         this.dataSource = new MatTableDataSource<EmployeeModel>(response.items);
         this.length = response.totalItems;

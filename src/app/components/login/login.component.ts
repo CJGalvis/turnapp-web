@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { GlobalService } from 'src/app/services/global.service';
 import { MessageService } from 'src/app/services/message.service';
 
 @Component({
@@ -12,16 +13,19 @@ import { MessageService } from 'src/app/services/message.service';
 })
 export class LoginComponent implements OnInit {
 
-  loginForm: FormGroup;
+  public loginForm: FormGroup;
   public currentYear: Date = new Date();
+  public isRunning: boolean;
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private globalService: GlobalService
   ) { }
 
   ngOnInit(): void {
+    this.globalService.getRunning().subscribe(value => this.isRunning = value);
     this.buildForm();
   }
 

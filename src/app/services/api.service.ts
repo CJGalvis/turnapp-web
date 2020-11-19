@@ -31,6 +31,12 @@ export class ApiService {
     return this.http.get<ApiResponse<EmployeeModel>>(url);
   }
 
+  getEmployeesFilter(filter: any, pageIndex: number, pageSize: number): Observable<ApiResponse<EmployeeModel>> {
+    const endpoint: string = `/employees/filters/get?skip=${pageIndex}&limit=${pageSize}`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.post<ApiResponse<EmployeeModel>>(url, filter);
+  }
+
   saveEmployee(data: EmployeeModel): Observable<any> {
     const endpoint: string = `/employees/new`;
     const url: string = `${this.API}${endpoint}`;
