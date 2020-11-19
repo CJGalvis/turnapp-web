@@ -59,7 +59,7 @@ export class EmployeeListViewComponent implements OnInit {
     if (categoriesSelected.length == 0) {
       categoriesSelected = this.categoriesList.map(item => item._id);
     }
-    filter.cateogry = categoriesSelected;
+    filter.category = categoriesSelected;
     this.apiService.getEmployeesFilter(filter, this.pageIndex, this.pageSize).subscribe(
       (response: ApiResponse<EmployeeModel>) => {
         this.dataSource = new MatTableDataSource<EmployeeModel>(response.items);
