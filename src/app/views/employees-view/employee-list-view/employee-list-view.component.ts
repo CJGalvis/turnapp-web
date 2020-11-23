@@ -1,8 +1,6 @@
-import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatStepper } from '@angular/material/stepper';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogConfirmComponent } from 'src/app/components/dialog-confirm/dialog-confirm.component';
 import { ApiErrorModel } from 'src/app/models/ApiErrorModel';
@@ -12,6 +10,8 @@ import { ApiService } from 'src/app/services/api.service';
 import { MessageService } from 'src/app/services/message.service';
 import { DialogEditEmployeeComponent } from 'src/app/components/dialog-edit-employee/dialog-edit-employee.component';
 import { CategoryModel } from 'src/app/models/CategoryModel';
+import { consts } from 'src/app/const';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'turnapp-employee-list-view',
@@ -21,22 +21,24 @@ import { CategoryModel } from 'src/app/models/CategoryModel';
 export class EmployeeListViewComponent implements OnInit {
 
   public searchEmployeeFrom: FormGroup;
-  public pageIndex: number = 0;
-  public pageSize: number = 10;
+  public pageIndex: number = consts.pageIndex;
+  public pageSize: number = consts.pageSize;
+  public pageSizeOptions: Array<number> = consts.pageSizeOptions;
   public displayedColumns: string[] = ['code', 'name', 'lastname', 'email', 'category', 'actions'];
   public dataSource = new MatTableDataSource<EmployeeModel>([]);
   public length: number = 0;
-  public selection = new SelectionModel<EmployeeModel>(true, []);
-  public pageSizeOptions: Array<number> = [5, 10, 15];
   public categoriesList: Array<CategoryModel> = [];
+  public isRunning: boolean;
 
   constructor(
     private messageService: MessageService,
     private apiService: ApiService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private globalService: GlobalService
   ) { }
 
   ngOnInit(): void {
+    this.globalService.getRunning().subscribe(value => this.isRunning = value);
     this.buildFormSearch();
     this.getCategories();
     this.getEmployees();
@@ -69,7 +71,7 @@ export class EmployeeListViewComponent implements OnInit {
   }
 
   getEmployees(event?: any) {
-    this.pageIndex = event ? event.pageIndex : this.pageIndex;
+    this.pageIndex = event ? event.pageIndex * this.pageSize : this.pageIndex;
     this.pageSize = event ? event.pageSize : this.pageSize;
     this.apiService.getEmployees(this.pageIndex, this.pageSize).subscribe(
       (response: ApiResponse<EmployeeModel>) => {
@@ -121,7 +123,7 @@ export class EmployeeListViewComponent implements OnInit {
   }
 
   getCategories() {
-    this.apiService.getCategories().subscribe(
+    this.apiService.getCategories(0, 1000).subscribe(
       (response: ApiResponse<any>) => {
         this.categoriesList = response.items;
       },

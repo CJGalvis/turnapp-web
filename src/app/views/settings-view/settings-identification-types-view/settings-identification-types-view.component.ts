@@ -4,10 +4,12 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogConfirmComponent } from 'src/app/components/dialog-confirm/dialog-confirm.component';
+import { consts } from 'src/app/const';
 import { ApiErrorModel } from 'src/app/models/ApiErrorModel';
 import { ApiResponse } from 'src/app/models/ApiResponse';
 import { IdentificationTypeModel } from 'src/app/models/IdentificationTypeModel';
 import { ApiService } from 'src/app/services/api.service';
+import { GlobalService } from 'src/app/services/global.service';
 import { MessageService } from 'src/app/services/message.service';
 
 @Component({
@@ -19,22 +21,25 @@ export class SettingsIdentificationTypesViewComponent implements OnInit {
 
   public identificationForm: FormGroup;
   public identificationSelected: IdentificationTypeModel;
-  public pageIndex: number = 0;
-  public pageSize: number = 10;
+  public pageIndex: number = consts.pageIndex;
+  public pageSize: number = consts.pageSize;
+  public pageSizeOptions: Array<number> = consts.pageSizeOptions;
   public displayedColumns: string[] = ['id', 'value', 'description', 'actions'];
   public dataSource = new MatTableDataSource<any>([]);
   public length: number = 0;
   public selection = new SelectionModel<any>(true, []);
-  public pageSizeOptions: Array<number> = [5, 10, 15];
   public hasErrors: boolean;
+  public isRunning: boolean;
 
   constructor(
     private messageService: MessageService,
     private apiService: ApiService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private globalService: GlobalService
   ) { }
 
   ngOnInit(): void {
+    this.globalService.getRunning().subscribe(value => this.isRunning = value);
     this.buildForm();
     this.getIdentificationTypes();
   }
@@ -82,11 +87,13 @@ export class SettingsIdentificationTypesViewComponent implements OnInit {
     )
   }
 
-  getIdentificationTypes() {
-    this.apiService.getIdentificationTypes().subscribe(
+  getIdentificationTypes(event?: any) {
+    this.pageIndex = event ? event.pageIndex * this.pageSize : this.pageIndex;
+    this.pageSize = event ? event.pageSize : this.pageSize;
+    this.apiService.getIdentificationTypes(this.pageIndex, this.pageSize).subscribe(
       (response: ApiResponse<any>) => {
         this.dataSource = new MatTableDataSource<any>(response.items);
-        this.length = this.dataSource.data.length;
+        this.length = response.totalItems;
       },
       (error: any) => {
         this.messageService.shortMessage(error.error.message);
@@ -99,7 +106,7 @@ export class SettingsIdentificationTypesViewComponent implements OnInit {
       width: '250px',
       data: {
         title: 'Confirmación',
-        message: '¿Está seguro de querer eliminar a este empleado?'
+        message: '¿Está seguro de querer eliminar este tipo de identificación?'
       }
     });
 

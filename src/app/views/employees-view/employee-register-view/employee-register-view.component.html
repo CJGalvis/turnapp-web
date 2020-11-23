@@ -65,11 +65,11 @@
             </div>
 
             <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="end end">
-                <button appHttpDisabled mat-raised-button color="primary" type="submit">
+                <button [disabled]="isRunning" mat-raised-button color="primary" type="submit">
                     Aceptar
                 </button>
 
-                <button appHttpDisabled mat-raised-button type="button" (click)="buildFormRegister()">
+                <button [disabled]="isRunning" mat-raised-button type="button" (click)="buildFormRegister()">
                     Limpiar
                 </button>
             </div>

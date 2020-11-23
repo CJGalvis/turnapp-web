@@ -9,6 +9,8 @@ import { ApiResponse } from 'src/app/models/ApiResponse';
 import { ApiService } from 'src/app/services/api.service';
 import { MessageService } from 'src/app/services/message.service';
 import { TurnModel } from 'src/app/models/TurnModel';
+import { consts } from 'src/app/const';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'turnapp-settings-shedules-view',
@@ -19,22 +21,26 @@ export class SettingsShedulesViewComponent implements OnInit {
 
   public turnForm: FormGroup;
   public turnSelected: TurnModel;
-  public pageIndex: number = 0;
-  public pageSize: number = 10;
+  public pageIndex: number = consts.pageIndex;
+  public pageSize: number = consts.pageSize;
+  public pageSizeOptions: Array<number> = consts.pageSizeOptions;
   public displayedColumns: string[] = ['id', 'name', 'timeStart', 'timeEnd', 'actions'];
   public dataSource = new MatTableDataSource<any>([]);
   public length: number = 0;
   public selection = new SelectionModel<any>(true, []);
-  public pageSizeOptions: Array<number> = [5, 10, 15];
   public hasErrors: boolean;
+  public isRunning: boolean;
+
 
   constructor(
     private messageService: MessageService,
     private apiService: ApiService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private globalService: GlobalService
   ) { }
 
   ngOnInit(): void {
+    this.globalService.getRunning().subscribe(value => this.isRunning = value);
     this.buildForm();
     this.getTurns();
   }
@@ -83,11 +89,13 @@ export class SettingsShedulesViewComponent implements OnInit {
     )
   }
 
-  getTurns() {
-    this.apiService.getTurns().subscribe(
+  getTurns(event?: any) {
+    this.pageIndex = event ? event.pageIndex * this.pageSize : this.pageIndex;
+    this.pageSize = event ? event.pageSize : this.pageSize;
+    this.apiService.getTurns(this.pageIndex, this.pageSize).subscribe(
       (response: ApiResponse<any>) => {
         this.dataSource = new MatTableDataSource<any>(response.items);
-        this.length = this.dataSource.data.length;
+        this.length = response.totalItems;
       },
       (error: any) => {
         this.messageService.shortMessage(error.error.message);

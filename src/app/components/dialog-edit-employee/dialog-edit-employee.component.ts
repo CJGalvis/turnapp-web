@@ -75,8 +75,8 @@ export class DialogEditEmployeeComponent implements OnInit {
 
   getDataInit() {
     forkJoin([
-      this.apiService.getCategories(),
-      this.apiService.getIdentificationTypes()
+      this.apiService.getCategories(0, 1000),
+      this.apiService.getIdentificationTypes(0, 1000)
     ]).subscribe(
       (response: any) => {
         this.categoriesList = response[0].items;

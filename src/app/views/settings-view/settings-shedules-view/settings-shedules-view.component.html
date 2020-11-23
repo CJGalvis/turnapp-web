@@ -30,11 +30,11 @@
                 </div>
 
                 <div fxLayout="row" fxLayoutGap="25px" fxLayoutAlign="end end">
-                    <button appHttpDisabled mat-raised-button color="primary" type="submit">
+                    <button [disabled]="isRunning" mat-raised-button color="primary" type="submit">
                         Aceptar
                     </button>
 
-                    <button appHttpDisabled mat-raised-button type="button" (click)="buildForm()">
+                    <button [disabled]="isRunning" mat-raised-button type="button" (click)="buildForm()">
                         Limpiar
                     </button>
                 </div>
@@ -79,12 +79,12 @@
                 <th mat-header-cell *matHeaderCellDef> Acciones </th>
                 <td mat-cell *matCellDef="let element">
                     <div fxLayout="row" fxLayoutGap="10px">
-                        <button appHttpDisabled mat-icon-button color="warn" type="button" matTooltip="Eliminar"
+                        <button [disabled]="isRunning" mat-icon-button color="warn" type="button" matTooltip="Eliminar"
                             (click)="goToDelete(element)">
                             <mat-icon>delete_for_ever</mat-icon>
                         </button>
 
-                        <button appHttpDisabled mat-icon-button color="primary" type="button" matTooltip="Editar"
+                        <button [disabled]="isRunning" mat-icon-button color="primary" type="button" matTooltip="Editar"
                             (click)="getItemToEdit(element)">
                             <mat-icon>edit</mat-icon>
                         </button>
@@ -101,8 +101,8 @@
             <h4 class="no-data">No hay registros para mostrar.</h4>
         </div>
 
-        <mat-paginator *ngIf="length != 0" [length]="length" [pageIndex]="pageIndex" [pageSize]="pageSize"
-            [pageSizeOptions]="pageSizeOptions">
+        <mat-paginator *ngIf="length != 0" [length]="length" [pageSizeOptions]="pageSizeOptions"
+            (page)="getTurns($event)">
         </mat-paginator>
     </mat-card>
 </div>

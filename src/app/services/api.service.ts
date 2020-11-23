@@ -67,8 +67,8 @@ export class ApiService {
     return this.http.post<ApiResponse<any>>(url, turn);
   }
 
-  getTurns(): Observable<any> {
-    const endpoint: string = `/turns/get`;
+  getTurns(pageIndex: number, pageSize: number): Observable<any> {
+    const endpoint: string = `/turns/get?skip=${pageIndex}&limit=${pageSize}`;
     const url: string = `${this.API}${endpoint}`;
     return this.http.get<ApiResponse<any>>(url);
   }
@@ -91,8 +91,8 @@ export class ApiService {
     return this.http.post<ApiResponse<any>>(url, turn);
   }
 
-  getCategories(): Observable<any> {
-    const endpoint: string = `/categories/get`;
+  getCategories(pageIndex: number, pageSize: number): Observable<any> {
+    const endpoint: string = `/categories/get?skip=${pageIndex}&limit=${pageSize}`;
     const url: string = `${this.API}${endpoint}`;
     return this.http.get<ApiResponse<any>>(url);
   }
@@ -109,8 +109,8 @@ export class ApiService {
     return this.http.put<ApiResponse<CategoryModel>>(url, data);
   }
 
-  getIdentificationTypes() {
-    const endpoint: string = `/identification-types/get`;
+  getIdentificationTypes(pageIndex: number, pageSize: number) {
+    const endpoint: string = `/identification-types/get?skip=${pageIndex}&limit=${pageSize}`;
     const url: string = `${this.API}${endpoint}`;
     return this.http.get<ApiResponse<any>>(url);
   }
@@ -129,6 +129,30 @@ export class ApiService {
 
   saveIdentification(turn: any): Observable<any> {
     const endpoint: string = `/identification-types/new`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.post<ApiResponse<any>>(url, turn);
+  }
+
+  getShedules(pageIndex: number, pageSize: number) {
+    const endpoint: string = `/shedules/get?skip=${pageIndex}&limit=${pageSize}`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.get<ApiResponse<any>>(url);
+  }
+
+  deleteShedule(code: string): Observable<any> {
+    const endpoint: string = `/shedules/delete/${code}`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.get<ApiResponse<CategoryModel>>(url);
+  }
+
+  editShedule(data: IdentificationTypeModel, code: string): Observable<any> {
+    const endpoint: string = `/shedules/put/${code}`;
+    const url: string = `${this.API}${endpoint}`;
+    return this.http.put<ApiResponse<CategoryModel>>(url, data);
+  }
+
+  saveShedule(turn: any): Observable<any> {
+    const endpoint: string = `/shedules/new`;
     const url: string = `${this.API}${endpoint}`;
     return this.http.post<ApiResponse<any>>(url, turn);
   }
