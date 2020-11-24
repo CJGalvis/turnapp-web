@@ -52,6 +52,10 @@ export class SettingsCategoriesViewComponent implements OnInit {
     });
     this.categorySelected = null;
     this.hasErrors = false;
+    this.pageIndex = consts.pageIndex;
+    this.pageSize = consts.pageSize;
+    this.pageSizeOptions = consts.pageSizeOptions;
+    this.length = 0;
   }
 
   saveCategory() {
@@ -88,9 +92,9 @@ export class SettingsCategoriesViewComponent implements OnInit {
   }
 
   getCategories(event?: any) {
-    this.pageIndex = event ? event.pageIndex * this.pageSize : this.pageIndex;
-    this.pageSize = event ? event.pageSize : this.pageSize;
-    this.apiService.getCategories(this.pageIndex, this.pageSize).subscribe(
+    const pageIndex = event ? event.pageIndex * this.pageSize : this.pageIndex;
+    const pageSize = event ? event.pageSize : this.pageSize;
+    this.apiService.getCategories(pageIndex, pageSize).subscribe(
       (response: ApiResponse<any>) => {
         this.dataSource = new MatTableDataSource<any>(response.items);
         this.length = response.totalItems;
@@ -131,7 +135,6 @@ export class SettingsCategoriesViewComponent implements OnInit {
     this.categorySelected = element;
     this.categoryForm.patchValue(this.categorySelected);
   }
-
 
   cutString(value: string, length?: number) {
     return value.substring(0, length | 5);

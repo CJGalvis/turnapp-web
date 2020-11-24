@@ -54,6 +54,10 @@ export class SettingsShedulesViewComponent implements OnInit {
     });
     this.turnSelected = null;
     this.hasErrors = false;
+    this.pageIndex = consts.pageIndex;
+    this.pageSize = consts.pageSize;
+    this.pageSizeOptions = consts.pageSizeOptions;
+    this.length = 0;
   }
 
   saveTurn() {
@@ -90,9 +94,9 @@ export class SettingsShedulesViewComponent implements OnInit {
   }
 
   getTurns(event?: any) {
-    this.pageIndex = event ? event.pageIndex * this.pageSize : this.pageIndex;
-    this.pageSize = event ? event.pageSize : this.pageSize;
-    this.apiService.getTurns(this.pageIndex, this.pageSize).subscribe(
+    const pageIndex = event ? event.pageIndex * this.pageSize : this.pageIndex;
+    const pageSize = event ? event.pageSize : this.pageSize;
+    this.apiService.getTurns(pageIndex, pageSize).subscribe(
       (response: ApiResponse<any>) => {
         this.dataSource = new MatTableDataSource<any>(response.items);
         this.length = response.totalItems;

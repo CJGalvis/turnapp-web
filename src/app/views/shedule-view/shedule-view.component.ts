@@ -11,6 +11,9 @@ import { EmployeeModel } from 'src/app/models/EmployeeModel';
 import { ApiService } from 'src/app/services/api.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { MessageService } from 'src/app/services/message.service';
+import { SheduleModel } from 'src/app/models/SheduleModel';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogConfirmComponent } from 'src/app/components/dialog-confirm/dialog-confirm.component';
 
 @Component({
   selector: 'app-shedule-view',
@@ -21,6 +24,7 @@ export class SheduleViewComponent implements OnInit {
 
   public employees: Array<EmployeeModel>;
   public registerSheduleForm: FormGroup;
+  public sheduleSelected: SheduleModel;
   public now: Date = new Date;
   public turns: Array<any> = [];
   public categoriesList: Array<CategoryModel> = [];
@@ -36,39 +40,63 @@ export class SheduleViewComponent implements OnInit {
   constructor(
     private messageService: MessageService,
     private apiService: ApiService,
-    private globalService: GlobalService
+    private globalService: GlobalService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
     this.globalService.getRunning().subscribe(value => this.isRunning = value);
     this.buildForm();
-    this.getEmployees();
     this.getData();
+    this.getShedules();
   }
 
   buildForm() {
     this.registerSheduleForm = new FormGroup({
       employeeCode: new FormControl('', [Validators.required]),
-      firstName: new FormControl({ value: '', disabled: true }, [Validators.required]),
-      firstLastname: new FormControl({ value: '', disabled: true }, [Validators.required]),
-      category: new FormControl({ value: '', disabled: true }, [Validators.required]),
-      date: new FormControl('', [Validators.required]),
+      firstName: new FormControl('', [Validators.required]),
+      firstLastname: new FormControl('', [Validators.required]),
+      category: new FormControl('', [Validators.required]),
+      dateStart: new FormControl('', [Validators.required]),
+      dateEnd: new FormControl('', [Validators.required]),
       type: new FormControl('', [Validators.required]),
-      hours: new FormControl({ value: '', disabled: true }, [Validators.required]),
+      hours: new FormControl('', [Validators.required]),
     })
     this.hasErrors = false;
+    this.pageIndex = consts.pageIndex;
+    this.pageSize = consts.pageSize;
+    this.pageSizeOptions = consts.pageSizeOptions;
+    this.length = 0;
   }
 
   saveShedule() {
+    if (this.registerSheduleForm.invalid) {
+      this.messageService.shortMessage('Los campos marcados en rojo deben ser verificados');
+      this.hasErrors = true;
+      return;
+    }
 
-  }
+    if (this.sheduleSelected) {
+      this.apiService.editShedule(this.registerSheduleForm.value, this.sheduleSelected._id).subscribe(
+        (response: ApiResponse<any>) => {
+          this.messageService.shortMessage(response.message);
+          this.buildForm();
+          this.getShedules();
+        },
+        (error: any) => {
+          this.messageService.shortMessage(error.error.message);
+        }
+      )
+      return;
+    }
 
-  getEmployees(event?: any) {
-    this.apiService.getEmployees(0, 100).subscribe(
-      (response: ApiResponse<EmployeeModel>) => {
-        this.employees = response.items;
+    this.apiService.saveShedule(this.registerSheduleForm.value).subscribe(
+      (response: ApiResponse<any>) => {
+        this.messageService.shortMessage(response.message);
+        this.buildForm();
+        this.getShedules();
       },
-      (error: ApiErrorModel) => {
+      (error: any) => {
         this.messageService.shortMessage(error.error.message);
       }
     )
@@ -90,23 +118,67 @@ export class SheduleViewComponent implements OnInit {
   }
 
   getData() {
+    this.registerSheduleForm.disable();
     forkJoin([
       this.apiService.getTurns(0, 1000),
-      this.apiService.getCategories(0, 1000)
+      this.apiService.getCategories(0, 1000),
+      this.apiService.getEmployees(0, 1000)
     ]).subscribe(
       (response: any) => {
+        this.registerSheduleForm.enable();
+        this.registerSheduleForm.get('firstName').disable();
+        this.registerSheduleForm.get('firstLastname').disable();
+        this.registerSheduleForm.get('category').disable();
+        this.registerSheduleForm.get('hours').disable();
         this.turns = response[0].items;
         this.categoriesList = response[1].items;
+        this.employees = response[2].items;
       }
     )
   }
 
-  goToDelete(element) {
+  goToDelete(element: SheduleModel) {
+    const dialogRef = this.dialog.open(DialogConfirmComponent, {
+      width: '250px',
+      data: {
+        title: 'Confirmación',
+        message: '¿Está seguro de querer eliminar a este empleado?'
+      }
+    });
 
+    dialogRef.afterClosed().subscribe(
+      (result) => {
+        if (result) {
+          this.apiService.deleteShedule(element._id).subscribe(
+            (response: ApiResponse<CategoryModel>) => {
+              this.messageService.shortMessage(response.message);
+              this.getShedules();
+            },
+            (error: ApiErrorModel) => {
+              this.messageService.shortMessage(error.error.message);
+            }
+          )
+        }
+      }
+    );
   }
 
   getItemToEdit(element) {
 
+  }
+
+  getShedules(event?: any) {
+    const pageIndex = event ? event.pageIndex * this.pageSize : this.pageIndex;
+    const pageSize = event ? event.pageSize : this.pageSize;
+    this.apiService.getShedules(pageIndex, pageSize).subscribe(
+      (response: ApiResponse<any>) => {
+        this.dataSource = new MatTableDataSource<any>(response.items);
+        this.length = response.totalItems;
+      },
+      (error: any) => {
+        this.messageService.shortMessage(error.error.message);
+      }
+    )
   }
 
 }

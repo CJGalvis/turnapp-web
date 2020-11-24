@@ -52,6 +52,10 @@ export class SettingsIdentificationTypesViewComponent implements OnInit {
     });
     this.identificationSelected = null;
     this.hasErrors = false;
+    this.pageIndex = consts.pageIndex;
+    this.pageSize = consts.pageSize;
+    this.pageSizeOptions = consts.pageSizeOptions;
+    this.length = 0;
   }
 
   saveIdentification() {
@@ -88,9 +92,9 @@ export class SettingsIdentificationTypesViewComponent implements OnInit {
   }
 
   getIdentificationTypes(event?: any) {
-    this.pageIndex = event ? event.pageIndex * this.pageSize : this.pageIndex;
-    this.pageSize = event ? event.pageSize : this.pageSize;
-    this.apiService.getIdentificationTypes(this.pageIndex, this.pageSize).subscribe(
+    const pageIndex = event ? event.pageIndex * this.pageSize : this.pageIndex;
+    const pageSize = event ? event.pageSize : this.pageSize;
+    this.apiService.getIdentificationTypes(pageIndex, pageSize).subscribe(
       (response: ApiResponse<any>) => {
         this.dataSource = new MatTableDataSource<any>(response.items);
         this.length = response.totalItems;

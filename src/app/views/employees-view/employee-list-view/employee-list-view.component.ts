@@ -41,7 +41,6 @@ export class EmployeeListViewComponent implements OnInit {
     this.globalService.getRunning().subscribe(value => this.isRunning = value);
     this.buildFormSearch();
     this.getCategories();
-    this.getEmployees();
   }
 
   buildFormSearch() {
@@ -51,18 +50,22 @@ export class EmployeeListViewComponent implements OnInit {
       firstLastname: new FormControl(''),
       category: new FormControl([]),
     })
+    this.pageIndex = consts.pageIndex;
+    this.pageSize = consts.pageSize;
+    this.pageSizeOptions = consts.pageSizeOptions;
+    this.length = 0;
   }
 
-  searchEmployee() {
-    this.pageIndex = 0;
-    this.pageSize = 10;
-    const filter = this.searchEmployeeFrom.value
+  getEmployees(event?: any) {
+    const pageIndex = event ? event.pageIndex * this.pageSize : this.pageIndex;
+    const pageSize = event ? event.pageSize : this.pageSize;
+    const filter = this.searchEmployeeFrom.value;
     let categoriesSelected: Array<string> = this.searchEmployeeFrom.get('category').value || [];
     if (categoriesSelected.length == 0) {
       categoriesSelected = this.categoriesList.map(item => item._id);
     }
     filter.category = categoriesSelected;
-    this.apiService.getEmployeesFilter(filter, this.pageIndex, this.pageSize).subscribe(
+    this.apiService.getEmployeesFilter(filter, pageIndex, pageSize).subscribe(
       (response: ApiResponse<EmployeeModel>) => {
         this.dataSource = new MatTableDataSource<EmployeeModel>(response.items);
         this.length = response.totalItems;
@@ -70,19 +73,19 @@ export class EmployeeListViewComponent implements OnInit {
     )
   }
 
-  getEmployees(event?: any) {
-    this.pageIndex = event ? event.pageIndex * this.pageSize : this.pageIndex;
-    this.pageSize = event ? event.pageSize : this.pageSize;
-    this.apiService.getEmployees(this.pageIndex, this.pageSize).subscribe(
-      (response: ApiResponse<EmployeeModel>) => {
-        this.dataSource = new MatTableDataSource<EmployeeModel>(response.items);
-        this.length = response.totalItems;
-      },
-      (error: ApiErrorModel) => {
-        this.messageService.shortMessage(error.error.message);
-      }
-    )
-  }
+  // getEmployees(event?: any) {
+  //   this.pageIndex = event ? event.pageIndex * this.pageSize : this.pageIndex;
+  //   this.pageSize = event ? event.pageSize : this.pageSize;
+  //   this.apiService.getEmployees(this.pageIndex, this.pageSize).subscribe(
+  //     (response: ApiResponse<EmployeeModel>) => {
+  //       this.dataSource = new MatTableDataSource<EmployeeModel>(response.items);
+  //       this.length = response.totalItems;
+  //     },
+  //     (error: ApiErrorModel) => {
+  //       this.messageService.shortMessage(error.error.message);
+  //     }
+  //   )
+  // }
 
   getItemToEdit(element: EmployeeModel,) {
     const dialogRef = this.dialog.open(DialogEditEmployeeComponent, {
@@ -126,6 +129,7 @@ export class EmployeeListViewComponent implements OnInit {
     this.apiService.getCategories(0, 1000).subscribe(
       (response: ApiResponse<any>) => {
         this.categoriesList = response.items;
+        this.getEmployees();
       },
       (error: any) => {
         this.messageService.shortMessage(error.error.message);

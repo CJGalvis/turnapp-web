@@ -6,13 +6,18 @@
         <br>
 
         <mat-card-subtitle>
-            Registre a sus empleados, gestione sus horarios y mantenga organizado y seguro el tiempo de su empresa.
+            Registre a sus empleados, gestione sus horarios y mantenga organizado y seguro el tiempo y l ainformación de
+            su empresa.
         </mat-card-subtitle>
 
         <mat-card-content>
             <div fxLayout="row" fxLayoutGap="20px">
-                <button mat-raised-button color="primary">Gestionar empleados</button>
-                <button mat-raised-button color="primary">Gestionar horarios</button>
+                <button mat-raised-button color="primary" (click)="navigateTo('/dashboard/employees/list')">
+                    Gestionar empleados
+                </button>
+                <button mat-raised-button color="primary" (click)="navigateTo('/dashboard/shedules')">
+                    Gestionar turnos
+                </button>
             </div>
         </mat-card-content>
     </mat-card>

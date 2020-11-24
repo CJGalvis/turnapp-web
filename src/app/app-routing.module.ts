@@ -10,7 +10,6 @@ import { SettingsIdentificationTypesViewComponent } from './views/settings-view/
 import { SettingsShedulesViewComponent } from './views/settings-view/settings-shedules-view/settings-shedules-view.component';
 import { SettingsViewComponent } from './views/settings-view/settings-view.component';
 import { SheduleViewComponent } from './views/shedule-view/shedule-view.component';
-import { PermissionsViewComponent } from './views/permissions-view/permissions-view.component';
 import { LoginViewComponent } from './views/login-view/login-view.component';
 import { ResetPasswordViewComponent } from './views/reset-password-view/reset-password-view.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
@@ -88,10 +87,6 @@ const routes: Routes = [
             component: SettingsIdentificationTypesViewComponent
           }
         ]
-      },
-      {
-        path: 'permissions',
-        component: PermissionsViewComponent
       }
     ]
   }
