@@ -54,19 +54,15 @@ export class SheduleViewComponent implements OnInit {
   buildForm() {
     this.registerSheduleForm = new FormGroup({
       employeeCode: new FormControl('', [Validators.required]),
-      firstName: new FormControl('', [Validators.required]),
-      firstLastname: new FormControl('', [Validators.required]),
-      category: new FormControl('', [Validators.required]),
+      firstName: new FormControl(''),
+      firstLastname: new FormControl(''),
+      category: new FormControl(''),
       dateStart: new FormControl('', [Validators.required]),
       dateEnd: new FormControl('', [Validators.required]),
       type: new FormControl('', [Validators.required]),
       hours: new FormControl('', [Validators.required]),
     })
-    this.hasErrors = false;
-    this.pageIndex = consts.pageIndex;
-    this.pageSize = consts.pageSize;
-    this.pageSizeOptions = consts.pageSizeOptions;
-    this.length = 0;
+    this.resetData();
   }
 
   saveShedule() {
@@ -76,11 +72,14 @@ export class SheduleViewComponent implements OnInit {
       return;
     }
 
+    const data: SheduleModel = this.registerSheduleForm.value;
+    data.hours = this.registerSheduleForm.get('hours').value;
     if (this.sheduleSelected) {
-      this.apiService.editShedule(this.registerSheduleForm.value, this.sheduleSelected._id).subscribe(
+      this.apiService.editShedule(data, this.sheduleSelected._id).subscribe(
         (response: ApiResponse<any>) => {
           this.messageService.shortMessage(response.message);
-          this.buildForm();
+          this.registerSheduleForm.reset();
+          this.resetData();
           this.getShedules();
         },
         (error: any) => {
@@ -90,10 +89,11 @@ export class SheduleViewComponent implements OnInit {
       return;
     }
 
-    this.apiService.saveShedule(this.registerSheduleForm.value).subscribe(
+    this.apiService.saveShedule(data).subscribe(
       (response: ApiResponse<any>) => {
         this.messageService.shortMessage(response.message);
-        this.buildForm();
+        this.registerSheduleForm.reset();
+        this.resetData();
         this.getShedules();
       },
       (error: any) => {
@@ -179,6 +179,18 @@ export class SheduleViewComponent implements OnInit {
         this.messageService.shortMessage(error.error.message);
       }
     )
+  }
+
+  resetData() {
+    this.hasErrors = false;
+    this.pageIndex = consts.pageIndex;
+    this.pageSize = consts.pageSize;
+    this.pageSizeOptions = consts.pageSizeOptions;
+    this.length = 0;
+    this.registerSheduleForm.get('firstName').disable();
+    this.registerSheduleForm.get('firstLastname').disable();
+    this.registerSheduleForm.get('category').disable();
+    this.registerSheduleForm.get('hours').disable();
   }
 
 }

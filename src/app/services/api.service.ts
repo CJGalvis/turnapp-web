@@ -6,6 +6,7 @@ import { ApiResponse } from '../models/ApiResponse';
 import { CategoryModel } from '../models/CategoryModel';
 import { EmployeeModel } from '../models/EmployeeModel';
 import { IdentificationTypeModel } from '../models/IdentificationTypeModel';
+import { SheduleModel } from '../models/SheduleModel';
 import { TurnModel } from '../models/TurnModel';
 
 @Injectable({
@@ -145,7 +146,7 @@ export class ApiService {
     return this.http.get<ApiResponse<CategoryModel>>(url);
   }
 
-  editShedule(data: IdentificationTypeModel, code: string): Observable<any> {
+  editShedule(data: SheduleModel, code: string): Observable<any> {
     const endpoint: string = `/shedules/put/${code}`;
     const url: string = `${this.API}${endpoint}`;
     return this.http.put<ApiResponse<CategoryModel>>(url, data);
