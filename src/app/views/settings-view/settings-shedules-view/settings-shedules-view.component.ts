@@ -57,7 +57,6 @@ export class SettingsShedulesViewComponent implements OnInit {
     this.pageIndex = consts.pageIndex;
     this.pageSize = consts.pageSize;
     this.pageSizeOptions = consts.pageSizeOptions;
-    this.length = 0;
   }
 
   saveTurn() {

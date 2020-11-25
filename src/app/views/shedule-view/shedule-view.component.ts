@@ -185,7 +185,6 @@ export class SheduleViewComponent implements OnInit {
     this.pageIndex = consts.pageIndex;
     this.pageSize = consts.pageSize;
     this.pageSizeOptions = consts.pageSizeOptions;
-    this.length = 0;
     this.registerSheduleForm.get('firstName').disable();
     this.registerSheduleForm.get('firstLastname').disable();
     this.registerSheduleForm.get('category').disable();

@@ -51,7 +51,6 @@ import { SettingsShedulesViewComponent } from './views/settings-view/settings-sh
 import { SettingsCategoriesViewComponent } from './views/settings-view/settings-categories-view/settings-categories-view.component';
 import { LoginViewComponent } from './views/login-view/login-view.component';
 import { SettingsIdentificationTypesViewComponent } from './views/settings-view/settings-identification-types-view/settings-identification-types-view.component';
-import { WithoutPermissionsViewComponent } from './views/without-permissions-view/without-permissions-view.component';
 import { ResetPasswordViewComponent } from './views/reset-password-view/reset-password-view.component';
 import { LoginComponent } from './components/login/login.component';
 
@@ -72,7 +71,6 @@ import { LoginComponent } from './components/login/login.component';
     SettingsCategoriesViewComponent,
     LoginViewComponent,
     SettingsIdentificationTypesViewComponent,
-    WithoutPermissionsViewComponent,
     ResetPasswordViewComponent,
     LoginComponent,
   ],
