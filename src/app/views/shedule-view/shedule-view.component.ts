@@ -78,7 +78,6 @@ export class SheduleViewComponent implements OnInit {
       this.apiService.editShedule(data, this.sheduleSelected._id).subscribe(
         (response: ApiResponse<any>) => {
           this.messageService.shortMessage(response.message);
-          this.registerSheduleForm.reset();
           this.resetData();
           this.getShedules();
         },
@@ -92,7 +91,6 @@ export class SheduleViewComponent implements OnInit {
     this.apiService.saveShedule(data).subscribe(
       (response: ApiResponse<any>) => {
         this.messageService.shortMessage(response.message);
-        this.registerSheduleForm.reset();
         this.resetData();
         this.getShedules();
       },
@@ -182,6 +180,7 @@ export class SheduleViewComponent implements OnInit {
   }
 
   resetData() {
+    this.registerSheduleForm.reset();
     this.hasErrors = false;
     this.pageIndex = consts.pageIndex;
     this.pageSize = consts.pageSize;
