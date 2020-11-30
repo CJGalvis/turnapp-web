@@ -1,27 +1,22 @@
-# Web
+# TurnApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.5.
+###### This project is an application about manage employee turns, inside this a user could register employees, shedules, turns, identification types and categories, these will be used to create employees and turns, and they will be saved and loaded according to Tenant.
 
-## Development server
+##### "Tenant" is the way we talk about a contract or parent user who will use the platform
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## For the project to work locally, we need install:
+#### Node JS: https://nodejs.org/es/
 
-## Code scaffolding
+#### Angular CLI: https://cli.angular.io/
+#### GIT: https://git-scm.com/
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+#### run command git clone https://github.com/CJGalvis/turnapp-web
 
-## Build
+##### After having everthing you need installed and clone the repository, we will proceed to install the project dependencies running the command "npm i" after running project with the command "ng serve --open"
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## (Optinal) Automatic deploy
 
-## Running unit tests
+#### For this process we need create an account in Heroku Platform, create an application and connect with github repository.
+#### this process is possible thanks to the file "Procfile", this is the file charger of automatically deploying on the heroku platform.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+#### For any questions, contact the email: cjgm1596@gmail.com
