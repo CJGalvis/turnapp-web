@@ -1,4 +1,4 @@
-# TurnApp
+# TurnApp (WEB)
 
 ###### This project is an application about manage employee turns, inside this a user could register employees, shedules, turns, identification types and categories, these will be used to create employees and turns, and they will be saved and loaded according to Tenant.
 
