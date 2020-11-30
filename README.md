@@ -17,6 +17,13 @@
 ## (Optinal) Automatic deploy
 
 #### For this process we need create an account in Heroku Platform, create an application and connect with github repository.
-#### this process is possible thanks to the file "Procfile", this is the file charger of automatically deploying on the heroku platform.
+#### this process is possible thanks to the file "Procfile", this is the file charger of automatically deploying on the heroku platform. NOTE: before to make push to master branch, we should run ":
+
+#### ng build --prod
+
+#### git add .
+
+#### git commit -m "message"
+#### git push origin master
 
 #### For any questions, contact the email: cjgm1596@gmail.com
